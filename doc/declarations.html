@@ -170,7 +170,7 @@
                         <h1><a class="header" href="#declarations" id="declarations">Declarations</a></h1>
 <p>-- TODO (fix)</p>
 <h1><a class="header" href="#declaration-names" id="declaration-names">Declaration Names</a></h1>
-<p>A declaration name is a :ref:<code>hierarchical identifier &lt;identifiers&gt;</code> that is interpreted relative to the current namespace as well as (during lookup) to the set of open namespaces.</p>
+<p>A declaration name is a hierarchical <a href="lexical_structure.html#identifiers">identifier</a> that is interpreted relative to the current namespace as well as (during lookup) to the set of open namespaces.</p>
 <p>.. code-block:: lean</p>
 <p>namespace a
 constant b.c : Nat
@@ -189,14 +189,14 @@ constant a : Int
 end a</p>
 <h1><a class="header" href="#contexts-and-telescopes" id="contexts-and-telescopes">Contexts and Telescopes</a></h1>
 <p>When processing user input, Lean first parses text to a raw expression format. It then uses background information and type constants to disambiguate overloaded symbols and infer implicit arguments, resulting in a fully-formed expression. This process is known as <em>elaboration</em>.</p>
-<p>As hinted in :numref:<code>expression_syntax</code>, expressions are parsed and
-elaborated with respect to an <em>environment</em> and a <em>local
-context</em>. Roughly speaking, an environment represents the state of
-Lean at the point where an expression is parsed, including previously
-declared axioms, constants, definitions, and theorems. In a given
-environment, a <em>local context</em> consists of a sequence <code>(a₁ : α₁) (a₂ : α₂) ... (aₙ : αₙ)</code> where each <code>aᵢ</code> is a name denoting a local
-constant and each <code>αᵢ</code> is an expression of type <code>Sort u</code> for some
-<code>u</code> which can involve elements of the environment and the local
+<p>As hinted in <a href="expressions.html#expression_syntax">Expression Syntax</a>,
+expressions are parsed and elaborated with respect to an <em>environment</em>
+and a <em>local context</em>. Roughly speaking, an environment represents the
+state of Lean at the point where an expression is parsed, including
+previously declared axioms, constants, definitions, and theorems. In a
+given environment, a <em>local context</em> consists of a sequence <code>(a₁ : α₁) (a₂ : α₂) ... (aₙ : αₙ)</code> where each <code>aᵢ</code> is a name denoting a
+local constant and each <code>αᵢ</code> is an expression of type <code>Sort u</code> for
+some <code>u</code> which can involve elements of the environment and the local
 constants <code>aⱼ</code> for <code>j &lt; i</code>.</p>
 <p>Intuitively, a local context is a list of variables that are held constant while an expression is being elaborated. Consider the following</p>
 <pre><code class="language-lean">def f (a b : Nat) : Nat → Nat := fun c =&gt; a + (b + c)
@@ -207,7 +207,7 @@ constants <code>aⱼ</code> for <code>j &lt; i</code>.</p>
 ⊢ Nat</p>
 <p>Here <code>a b c : Nat</code> indicates the local context, and the second <code>Nat</code> indicates the expected type of the result.</p>
 <p>A <em>context</em> is sometimes called a <em>telescope</em>, but the latter is used more generally to include a sequence of declarations occuring relative to a given context. For example, relative to the context <code>(a₁ : α₁) (a₂ : α₂) ... (aₙ : αₙ)</code>, the types <code>βᵢ</code> in a telescope <code>(b₁ : β₁) (b₂ : β₂) ... (bₙ : βₙ)</code> can refer to <code>a₁, ..., aₙ</code>. Thus a context can be viewed as a telescope relative to the empty context.</p>
-<p>Telescopes are often used to describe a list of arguments, or parameters, to a declaration. In such cases, it is often notationally convenient to let <code>(a : α)</code> stand for a telescope rather than just a single argument. In general, the annotations described in :ref:<code>implicit_arguments</code> can be used to mark arguments as implicit.</p>
+<p>Telescopes are often used to describe a list of arguments, or parameters, to a declaration. In such cases, it is often notationally convenient to let <code>(a : α)</code> stand for a telescope rather than just a single argument. In general, the annotations described in <a href="expressions.html#implicit_arguments">Implicit Arguments</a> can be used to mark arguments as implicit.</p>
 <p>.. _basic_declarations:</p>
 <h1><a class="header" href="#basic-declarations" id="basic-declarations">Basic Declarations</a></h1>
 <p>Lean provides ways of adding new objects to the environment. The following provide straightforward ways of declaring new objects:</p>
@@ -341,7 +341,7 @@ inductive cbt (α : Type u)
 -- END
 end hide</p>
 <p>Note that in the syntax of the inductive definition <code>foo</code>, the context <code>(a : α)</code> is left implicit. In other words, constructors and recursive arguments are written as though they have return type <code>foo</code> rather than <code>foo a</code>.</p>
-<p>Elements of the context <code>(a : α)</code> can be marked implicit as described in :numref:<code>implicit_arguments</code>. These annotations bear only on the type former, <code>foo</code>. Lean uses a heuristic to determine which arguments to the constructors should be marked implicit, namely, an argument is marked implicit if it can be inferred from the type of a subsequent argument. If the annotation <code>{}</code> appears after the constructor, a argument is marked implicit if it can be inferred from the type of a subsequent argument <em>or the return type</em>. For example, it is useful to let <code>nil</code> denote the empty list of any type, since the type can usually be inferred in the context in which it appears. These heuristics are imperfect, and you may sometimes wish to define your own constructors in terms of the default ones. In that case, use the <code>[pattern]</code> :ref:<code>attribute &lt;attributes&gt;</code> to ensure that these will be used appropriately by the :ref:<code>equation compiler &lt;the_equation_compiler&gt;</code>.</p>
+<p>Elements of the context <code>(a : α)</code> can be marked implicit as described in <a href="#implicit.md#implicit_arguments">Implicit Arguments</a>. These annotations bear only on the type former, <code>foo</code>. Lean uses a heuristic to determine which arguments to the constructors should be marked implicit, namely, an argument is marked implicit if it can be inferred from the type of a subsequent argument. If the annotation <code>{}</code> appears after the constructor, a argument is marked implicit if it can be inferred from the type of a subsequent argument <em>or the return type</em>. For example, it is useful to let <code>nil</code> denote the empty list of any type, since the type can usually be inferred in the context in which it appears. These heuristics are imperfect, and you may sometimes wish to define your own constructors in terms of the default ones. In that case, use the <code>[pattern]</code> [attribute](TODO: missing link) to ensure that these will be used appropriately by the <a href="#the-equation-compiler">Equation Compiler</a>.</p>
 <p>There are restrictions on the universe <code>u</code> in the return type <code>Sort u</code> of the type former. There are also restrictions on the universe <code>u</code> in the return type <code>Sort u</code> of the motive of the eliminator. These will be discussed in the next section in the more general setting of inductive families.</p>
 <p>Lean allows some additional syntactic conveniences. You can omit the return type of the type former, <code>Sort u</code>, in which case Lean will infer the minimal possible nonzero value for <code>u</code>. As with function definitions, you can list arguments to the constructors before the colon. In an enumerated type (that is, one where the constructors have no arguments), you can also leave out the return type of the constructors.</p>
 <p>.. code-block:: lean</p>
@@ -372,7 +372,7 @@ def list.nil' (α : Type u) : list α := list.nil</p>
 <li><code>foo.below</code>, <code>foo.ibelow</code> : functions used by the equation compiler to implement structural recursion</li>
 <li><code>foo.sizeof</code> : a measure which can be used for well-founded recursion</li>
 </ul>
-<p>Note that it is common to put definitions and theorems related to a datatype <code>foo</code> in a namespace of the same name. This makes it possible to use projection notation described in :numref:<code>structures_and_records</code> and :numref:<code>namespaces</code>.</p>
+<p>Note that it is common to put definitions and theorems related to a datatype <code>foo</code> in a namespace of the same name. This makes it possible to use projection notation described in <a href="struct.html#structures">Structures</a> and <a href="namespaces.html#namespaces">Namespaces</a>.</p>
 <p>.. code-block:: lean</p>
 <p>namespace hide
 universe u</p>
@@ -514,7 +514,7 @@ inductive double_tree (α : Type u)
 <li>a constructor for the inductive type of the corresponding argument, applied to a sequence of patterns.</li>
 </ul>
 <p>In the last case, the pattern must be enclosed in parentheses.</p>
-<p>Each term <code>tᵢ</code> is an expression in the context <code>(a : α)</code> together with the variables introduced on the left-hand side of the token <code>:=</code>. The term <code>tᵢ</code> can also include recursive calls to <code>foo</code>, as described below. The equation compiler does case splitting on the variables <code>(b : β)</code> as necessary to match the patterns, and defines <code>foo</code> so that it has the value <code>tᵢ</code> in each of the cases. In ideal circumstances (see below), the equations hold definitionally. Whether they hold definitionally or only propositionally, the equation compiler proves the relevant equations and assigns them internal names. They are accessible by the <code>rewrite</code> and <code>simp</code> tactics under the name <code>foo</code> (see :numref:<code>the_rewriter</code> and :numref:<code>the_simplifier</code>). If some of the patterns overlap, the equation compiler interprets the definition so that the first matching pattern applies in each case. Thus, if the last pattern is a variable, it covers all the remaining cases. If the patterns that are presented do not cover all possible cases, the equation compiler raises an error.</p>
+<p>Each term <code>tᵢ</code> is an expression in the context <code>(a : α)</code> together with the variables introduced on the left-hand side of the token <code>:=</code>. The term <code>tᵢ</code> can also include recursive calls to <code>foo</code>, as described below. The equation compiler does case splitting on the variables <code>(b : β)</code> as necessary to match the patterns, and defines <code>foo</code> so that it has the value <code>tᵢ</code> in each of the cases. In ideal circumstances (see below), the equations hold definitionally. Whether they hold definitionally or only propositionally, the equation compiler proves the relevant equations and assigns them internal names. They are accessible by the <code>rewrite</code> and <code>simp</code> tactics under the name <code>foo</code> (see <a href="tactics.html#rewrite">Rewrite</a> and <em>[TODO: where is simplifier tactic documented?]</em>. If some of the patterns overlap, the equation compiler interprets the definition so that the first matching pattern applies in each case. Thus, if the last pattern is a variable, it covers all the remaining cases. If the patterns that are presented do not cover all possible cases, the equation compiler raises an error.</p>
 <p>When identifiers are marked with the <code>[pattern]</code> attribute, the equation compiler unfolds them in the hopes of exposing a constructor. For example, this makes it possible to write <code>n+1</code> and <code>0</code> instead of <code>nat.succ n</code> and <code>nat.zero</code> in patterns.</p>
 <p>For a nonrecursive definition involving case splits, the defining equations will hold definitionally. With inductive types like <code>char</code>, <code>string</code>, and <code>fin n</code>, a case split would produce definitions with an inordinate number of cases. To avoid this, the equation compiler uses <code>if ... then ... else</code> instead of <code>cases_on</code> when defining the function. In this case, the defining equations hold definitionally as well.</p>
 <p>.. code-block:: lean</p>
@@ -580,7 +580,7 @@ by rw [div]
 end hide
 </code></pre>
 <p>Note that recursive definitions can in general require nested recursions, that is, recursion on different arguments of <code>foo</code> in the template above. The equation compiler handles this by abstracting later arguments, and recursively defining higher-order functions to meet the specification.</p>
-<p>The equation compiler also allows mutual recursive definitions, with a syntax similar to that of :ref:<code>mutual inductive definitions &lt;mutual_and_nested_inductive_definitions&gt;</code>. They are compiled using well-founded recursion, and so once again the defining equations hold only propositionally.</p>
+<p>The equation compiler also allows mutual recursive definitions, with a syntax similar to that of <a href="#mutual-and-nested-inductive-definitions">Mutual and Nested Inductive Definitions</a>. They are compiled using well-founded recursion, and so once again the defining equations hold only propositionally.</p>
 <p>.. code-block:: lean</p>
 <pre><code>mutual def even, odd
 with even : Nat → bool
@@ -596,7 +596,7 @@ by simp [even]
 example (a : Nat) : odd (a + 1) = even a :=
 by simp [odd]
 </code></pre>
-<p>Well-founded recursion is especially useful with :ref:<code>mutual and nested inductive definitions &lt;mutual_and_nested_inductive_definitions&gt;</code>, since it provides the canonical way of defining functions on these types.</p>
+<p>Well-founded recursion is especially useful with <a href="#mutual-and-nested-inductive-definitions">Mutual and Nested Inductive Definitions</a>, since it provides the canonical way of defining functions on these types.</p>
 <p>.. code-block:: lean</p>
 <pre><code>mutual inductive even, odd
 with even : Nat → Prop
@@ -688,7 +688,7 @@ end vector
 | pₘ₁, ..., pₘₙ := sₘ
 </code></pre>
 <p>Here <code>t₁, ..., tₙ</code> are any terms in the context in which the expression appears, the expressions <code>pᵢⱼ</code> are patterns, and the terms <code>sᵢ</code> are expressions in the local context together with variables introduced by the patterns on the left-hand side. Each <code>sᵢ</code> should have the expected type of the entire <code>match</code> expression.</p>
-<p>Any <code>match</code> expression is interpreted using the equation compiler, which generalizes <code>t₁, ..., tₙ</code>, defines an internal function meeting the specification, and then applies it to <code>t₁, ..., tₙ</code>. In contrast to the definitions in :numref:<code>the_equation_compiler</code>, the terms <code>tᵢ</code> are arbitrary terms rather than just variables, and the expression can occur anywhere within a Lean expression, not just at the top level of a definition. Note that the syntax here is somewhat different: both the terms <code>tᵢ</code> and the patterns <code>pᵢⱼ</code> are separated by commas.</p>
+<p>Any <code>match</code> expression is interpreted using the equation compiler, which generalizes <code>t₁, ..., tₙ</code>, defines an internal function meeting the specification, and then applies it to <code>t₁, ..., tₙ</code>. In contrast to the definitions in <a href="declarations.html#the-equation-compiler">The Equation Compiler</a>, the terms <code>tᵢ</code> are arbitrary terms rather than just variables, and the expression can occur anywhere within a Lean expression, not just at the top level of a definition. Note that the syntax here is somewhat different: both the terms <code>tᵢ</code> and the patterns <code>pᵢⱼ</code> are separated by commas.</p>
 <p>.. code-block:: lean</p>
 <pre><code>def foo (n : Nat) (b c : bool) :=
 5 + match n - 5, b &amp;&amp; c with
@@ -745,7 +745,7 @@ constructor :: (field₁ : β₁) ... (fieldₙ : βₙ)
 <li><em>anonymous projections</em> : <code>c.fieldᵢ</code></li>
 <li><em>numbered projections</em> : <code>c.i</code></li>
 </ul>
-<p>These can be used in any situation where Lean can infer that the type of <code>c</code> is of the form <code>foo a</code>. The convention for anonymous projections is extended to any function <code>f</code> defined in the namespace <code>foo</code>, as described in :numref:<code>namespaces</code>.</p>
+<p>These can be used in any situation where Lean can infer that the type of <code>c</code> is of the form <code>foo a</code>. The convention for anonymous projections is extended to any function <code>f</code> defined in the namespace <code>foo</code>, as described in <a href="namespaces.html">Namespaces</a>.</p>
 <p>Similarly, Lean offers the following convenient syntax for constructing elements of <code>foo</code>. They are equivalent to <code>foo.constructor b₁ b₂ f₁ f₁ ... fₙ</code>, where <code>b₁ : foo</code>, <code>b₂ : bar</code>, and each <code>fᵢ : βᵢ</code> :</p>
 <ul>
 <li>

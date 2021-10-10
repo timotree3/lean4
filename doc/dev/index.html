@@ -203,10 +203,16 @@ go-to-definition in the stdlib (automatically set when using
 <h2><a class="header" href="#dev-setup-using-elan" id="dev-setup-using-elan">Dev setup using elan</a></h2>
 <p>You can use <a href="https://github.com/leanprover/elan"><code>elan</code></a> to easily
 switch between stages and build configurations based on the current
-directory, both for the <code>lean/leanc/leanmake</code> binaries in your shell's
+directory, both for the <code>lean</code>, <code>leanc</code>, and <code>leanmake</code> binaries in your shell's
 PATH and inside your editor.</p>
 <p>To install elan, you can do so, without installing a default version of Lean, using</p>
-<pre><code class="language-bash">curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- --default-toolchain none
+<pre><code class="language-bash">[Unix]
+curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- --default-toolchain none
+
+[Windows]
+curl -O --location https://raw.githubusercontent.com/leanprover/elan/master/elan-init.ps1
+powershell -f elan-init.ps1 --default-toolchain none
+del elan-init.ps1
 </code></pre>
 <p>You can use <code>elan toolchain link</code> to give a specific stage build
 directory a reference name, then use <code>elan override set</code> to associate
