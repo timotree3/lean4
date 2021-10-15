@@ -186,31 +186,25 @@ make/CMake setup described on this page.</li>
 </ul>
 <h2><a class="header" href="#generic-build-instructions" id="generic-build-instructions">Generic Build Instructions</a></h2>
 <p>Setting up a basic release build:</p>
-<pre><code class="language-bash">git clone https://github.com/leanprover/lean4
+<pre><code class="language-bash">git clone https://github.com/leanprover/lean4 --recurse-submodules
 cd lean4
 mkdir -p build/release
 cd build/release
 cmake ../..
 make
 </code></pre>
-<p>Note: that if you have a CPU with lots of cores you will get a faster
-build if you specify the number of parallel jobs using the <code>-j n</code>
-option on make.</p>
+<p>For regular development, we recommend running</p>
+<pre><code class="language-bash">git config submodule.recurse true
+</code></pre>
+<p>in the checkout so that <code>--recurse-submodules</code> doesn't have to be
+specified with <code>git pull/checkout/...</code>.</p>
+<p>The above commands will compile the Lean library and binaries into the
+<code>stage1</code> subfolder; see below for details. Add <code>-j N</code> for an
+appropriate <code>N</code> to <code>make</code> for a parallel build.</p>
 <p>For example, on an AMD Ryzen 9 <code>make</code> takes 00:04:55, whereas <code>make -j 10</code>
 takes 00:01:38.  Your results may vary depending on the speed of your hard
 drive.</p>
-<p>Setting up a basic debug build:</p>
-<pre><code class="language-bash">git clone https://github.com/leanprover/lean4
-cd lean4
-mkdir -p build/debug
-cd build/debug
-cmake -D CMAKE_BUILD_TYPE=DEBUG ../..
-make
-</code></pre>
-<p>This will compile the Lean library and binary into the <code>stage1</code> subfolder; see
-below for details. Add <code>-jN</code> for an appropriate <code>N</code> to <code>make</code> for a parallel
-build.</p>
-<p>To install the build see <a href="../dev/index.html#dev-setup-using-elan">Dev setup using
+<p>To install the build, see <a href="../dev/index.html#dev-setup-using-elan">Dev setup using
 elan</a>.</p>
 <h2><a class="header" href="#useful-cmake-configuration-settings" id="useful-cmake-configuration-settings">Useful CMake Configuration Settings</a></h2>
 <p>Pass these along with the <code>cmake ../..</code> command.</p>
