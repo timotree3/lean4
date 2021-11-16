@@ -4085,7 +4085,7 @@ def xs : List Int := [1, 2, 3]
 to use this instance on pending type class synthesis problems.
 The actual Lean implementation defines homogeneous and heterogeneous classes for arithmetical operators.
 Moreover, <code>a+b</code>, <code>a*b</code>, <code>a-b</code>, <code>a/b</code>, and <code>a%b</code> are notations for the heterogeneous versions.
-The instance <code>OfNat Nat n</code> is the default instance for the <code>OfNat</code> class. This is why the numeral
+The instance <code>OfNat Nat n</code> is the default instance (with priority <code>100</code>) for the <code>OfNat</code> class. This is why the numeral
 <code>2</code> has type <code>Nat</code> when the expected type is not known. You can define default instances with higher
 priority to override the builtin ones.</p>
 <pre><code class="language-lean">structure Rational where
@@ -4093,7 +4093,7 @@ priority to override the builtin ones.</p>
   den : Nat
   inv : den ≠ 0
 
-@[defaultInstance 1]
+@[defaultInstance 200]
 instance : OfNat Rational n where
   ofNat := { num := n, den := 1, inv := by decide }
 
