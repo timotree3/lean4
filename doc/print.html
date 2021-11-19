@@ -5286,10 +5286,7 @@ manually building.  This means you generally do not use <code>make install</code
 <p>You can use any of the <a href="dev/../setup.html">supported editors</a> for editing
 the Lean source code. If you set up <code>elan</code> as below, opening <code>src/</code> as
 a <em>workspace folder</em> should ensure that stage 0 will be used for file
-in that directory. You should also set the <code>LEAN_SRC_PATH</code> environment
-variable to the path of the <code>src/</code> directory to enable
-go-to-definition in the stdlib (automatically set when using
-<code>nix-shell</code>).</p>
+in that directory.</p>
 <h2><a class="header" href="#dev-setup-using-elan" id="dev-setup-using-elan">Dev setup using elan</a></h2>
 <p>You can use <a href="https://github.com/leanprover/elan"><code>elan</code></a> to easily
 switch between stages and build configurations based on the current
@@ -5493,6 +5490,11 @@ brew install gmp
 It is easy to install all dependencies, it produces native
 64/32-binaries, and supports a C++14 compiler.</p>
 <p>An alternative to MSYS2 is to use <a href="make/wsl.html">Lean in Windows WSL</a>.</p>
+<p>While not necessary for pure building, you should first activate <a href="https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development">Developer
+Mode</a>
+(Settings &gt; Update &amp; Security &gt; For developers &gt; Developer Mode),
+which will allow Lean to create symlinks that e.g. enable go-to-definition in
+the stdlib.</p>
 <h2><a class="header" href="#installing-dependencies" id="installing-dependencies">Installing dependencies</a></h2>
 <p><a href="http://msys2.github.io">The official webpage of MSYS2</a> provides one-click installers.
 Once installed, you should run the &quot;MSYS2 MinGW 64-bit shell&quot; from the start menu.
