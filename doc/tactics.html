@@ -337,6 +337,44 @@ theorem ex (x : Nat) {y : Nat} (h : y &gt; 0) : x % y &lt; y := by
 <p>TODO</p>
 <h2><a class="header" href="#injection" id="injection">Injection</a></h2>
 <p>TODO</p>
+<h2><a class="header" href="#split" id="split">Split</a></h2>
+<p>The <code>split</code> tactic can be used to split the cases of an if-then-else or
+match into new subgoals, which can then be discharged individually.</p>
+<pre><code class="language-lean">def addMoreIfOdd (n : Nat) := if n % 2 = 0 then n + 1 else n + 2
+
+/- Examine each branch of the conditional to show that the result
+   is always positive -/
+example (n : Nat) : 0 &lt; addMoreIfOdd n := by
+  simp only [addMoreIfOdd]
+  split
+  next =&gt; exact Nat.zero_lt_succ _
+  next =&gt; exact Nat.zero_lt_succ _
+</code></pre>
+<pre><code class="language-lean">def binToChar (n : Nat) : Option Char :=
+  match n with
+  | 0 =&gt; some '0'
+  | 1 =&gt; some '1'
+  | _ =&gt; none
+
+example (n : Nat) : (binToChar n).isSome -&gt; n = 0 ∨ n = 1 := by
+  simp only [binToChar]
+  split
+  next =&gt; exact fun _ =&gt; Or.inl rfl
+  next =&gt; exact fun _ =&gt; Or.inr rfl
+  next =&gt; intro h; cases h
+
+/- Hypotheses about previous cases can be accessesd by assigning them a
+   name, like `ne_zero` below. Information about the matched term can also
+   be preserved using the `generalizing` tactic: -/
+example (n : Nat) : (n = 0) -&gt; (binToChar n = some '0') := by
+  simp only [binToChar]
+  split
+  case h_1 =&gt; intro _; rfl
+  case h_2 =&gt; intro h; cases h
+  /- Here, we can introduce `n ≠ 0` and `n ≠ 1` this case assumes
+     neither of the previous cases matched. -/
+  case h_3 ne_zero _  =&gt; intro eq_zero; exact absurd eq_zero ne_zero
+</code></pre>
 <h2><a class="header" href="#dependent-pattern-matching" id="dependent-pattern-matching">Dependent pattern matching</a></h2>
 <p>The <code>match-with</code> expression implements dependent pattern matching. You can use it to create concise proofs.</p>
 <pre><code class="language-lean">inductive Mem : α → List α → Prop where
