@@ -219,7 +219,7 @@ Lean has a builtin coercion from any type <code>a</code> to <code>Thunk a</code>
 </code></pre>
 <p>In the following example, we use the macro <code>dbg_trace</code> to demonstrate
 that the Lean runtime caches the value computed by a <code>Thunk</code>.
-We remark that the macro <code>dbg_trace</code> should be use for debugging purposes
+We remark that the macro <code>dbg_trace</code> should be used for debugging purposes
 only.</p>
 <pre><code class="language-lean">def add1 (x : Nat) : Nat :=
   dbg_trace &quot;add1: {x}&quot;
