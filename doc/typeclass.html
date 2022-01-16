@@ -312,30 +312,6 @@ instance : Inhabited Prop where
 -- true
 <span class="boring">end Ex
 </span></code></pre>
-<p>Sometimes we want to think of the default element of a type as being an <em>arbitrary</em> element, whose specific value should not play a role in our proofs.
-For that purpose, we can write <code>arbitrary</code> instead of <code>default</code>. We define <code>arbitrary</code> as an <em>opaque</em> constant.
-Opaque constants are never unfolded by the type checker.</p>
-<pre><code class="language-lean"><span class="boring">namespace Ex
-</span><span class="boring">export Inhabited (default)
-</span>theorem defNatEq0 : (default : Nat) = 0 :=
-  rfl
-
-constant arbitrary [Inhabited a] : a :=
-  Inhabited.default
-
--- theorem arbitraryNatEq0 : (arbitrary : Nat) = 0 :=
---   rfl
-/-
-error: type mismatch
-  rfl
-has type
-  arbitrary = arbitrary
-but is expected to have type
-  arbitrary = 0
--/
-<span class="boring">end Ex
-</span></code></pre>
-<p>The theorem <code>defNatEq0</code> type checks because the type checker can unfold <code>(default : Nat)</code> and reduce it to <code>0</code>. This is not the case in the theorem <code>arbitraryNatEq0</code> because <code>arbitrary</code> is an opaque constant.</p>
 <h2><a class="header" href="#chaining-instances" id="chaining-instances">Chaining Instances</a></h2>
 <p>If that were the extent of type class inference, it would not be all that impressive;
 it would be simply a mechanism of storing a list of instances for the elaborator to find in a lookup table.
@@ -344,7 +320,7 @@ an instance declaration can in turn depend on an implicit instance of a type cla
 This causes class inference to chain through instances recursively, backtracking when necessary, in a Prolog-like search.</p>
 <p>For example, the following definition shows that if two types <code>a</code> and <code>b</code> are inhabited, then so is their product:</p>
 <pre><code class="language-lean">instance [Inhabited a] [Inhabited b] : Inhabited (a × b) where
-  default := (arbitrary, arbitrary)
+  default := (default, default)
 </code></pre>
 <p>With this added to the earlier instance declarations, type class instance can infer, for example, a default element of <code>Nat × Bool</code>:</p>
 <pre><code class="language-lean"><span class="boring">namespace Ex
@@ -354,18 +330,18 @@ This causes class inference to chain through instances recursively, backtracking
 </span><span class="boring"> default := true
 </span><span class="boring">instance : Inhabited Nat where
 </span><span class="boring"> default := 0
-</span><span class="boring">constant arbitrary [Inhabited a] : a :=
+</span><span class="boring">constant default [Inhabited a] : a :=
 </span><span class="boring"> Inhabited.default
 </span>instance [Inhabited a] [Inhabited b] : Inhabited (a × b) where
-  default := (arbitrary, arbitrary)
+  default := (default, default)
 
-#eval (arbitrary : Nat × Bool)
+#eval (default : Nat × Bool)
 -- (0, true)
 <span class="boring">end Ex
 </span></code></pre>
 <p>Similarly, we can inhabit type function with suitable constant functions:</p>
 <pre><code class="language-lean">instance [Inhabited b] : Inhabited (a -&gt; b) where
-  default := fun _ =&gt; arbitrary
+  default := fun _ =&gt; default
 </code></pre>
 <p>As an exercise, try defining default instances for other types, such as <code>List</code> and <code>Sum</code> types.</p>
 <p>The Lean standard library contains the definition <code>inferInstance</code>. It has type <code>{α : Sort u} → [i : α] → α</code>,
@@ -375,7 +351,7 @@ and is useful for triggering the type class resolution procedure when the expect
 def foo : Inhabited (Nat × Nat) :=
   inferInstance
 
-theorem ex : foo.default = (arbitrary, arbitrary) :=
+theorem ex : foo.default = (default, default) :=
   rfl
 </code></pre>
 <p>You can use the command <code>#print</code> to inspect how simple <code>inferInstance</code> is.</p>
