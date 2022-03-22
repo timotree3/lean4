@@ -238,7 +238,7 @@ general, instances may depend on other instances in complicated ways. For exampl
 you can declare an (anonymous) instance stating that if <code>a</code> has addition, then <code>Array a</code>
 has addition:</p>
 <pre><code class="language-lean">instance [Add a] : Add (Array a) where
-  add x y := Array.zipWith x y (. + .)
+  add x y := Array.zipWith x y (· + ·)
 
 #eval Add.add #[1, 2] #[3, 4]
 -- #[4, 6]

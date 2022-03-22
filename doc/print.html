@@ -277,9 +277,9 @@ theorem twiceAdd2 (a : Nat) : twice (fun x =&gt; x + 2) a = a + 4 :=
   -- until they are identical.
   rfl
 
--- `(. + 2)` is syntax sugar for `(fun x =&gt; x + 2)`. The parentheses + `.` notation
+-- `(· + 2)` is syntax sugar for `(fun x =&gt; x + 2)`. The parentheses + `·` notation
 -- is useful for defining simple anonymous functions.
-#eval twice (. + 2) 10
+#eval twice (· + 2) 10
 
 -- Enumerated types are a special case of inductive types in Lean,
 -- which we will learn about later.
@@ -458,7 +458,7 @@ It can be set up analogously as a cache for your own project.</p>
 <pre><code class="language-bash">$ nix flake new mypkg -t github:leanprover/lean4
 </code></pre>
 <p>to create a new Lean package in directory <code>mypkg</code> using the latest commit of Lean 4.
-Such packages follow the same directory layout as described in the basic setup above, except for a <code>leanpkg.toml</code>/<code>lakefile.lean</code> replaced by a <code>flake.nix</code> file set up so you can run Nix commands on it, for example:</p>
+Such packages follow the same directory layout as described in the basic setup above, except for a <code>lakefile.lean</code> replaced by a <code>flake.nix</code> file set up so you can run Nix commands on it, for example:</p>
 <pre><code class="language-bash">$ nix build  # build package and all dependencies
 $ nix build .#executable  # compile `main` definition into executable (after you've added one)
 $ nix run .#emacs-dev  # open a pinned version of Emacs with lean4-mode fully set up
@@ -482,43 +482,48 @@ This includes selecting the correct stage of Lean (which it will compile on the 
 <pre><code class="language-bash">nix-collect-garbage
 </code></pre>
 <p>This will remove everything not reachable from &quot;GC roots&quot; such as the <code>./result</code> symlink created by <code>nix build</code>.</p>
-<p>Note that the package information in <code>flake.nix</code> is currently completely independent from <code>leanpkg.toml</code> used in the basic setup.
+<p>Note that the package information in <code>flake.nix</code> is currently completely independent from <code>lakefile.lean</code> used in the basic setup.
 Unifying the two formats is TBD.</p>
 <h1><a class="header" href="#quickstart" id="quickstart">Quickstart</a></h1>
 <p>These instructions will walk you through setting up Lean using the &quot;basic&quot; setup and VS Code as the editor.
 See <a href="./setup.html">Setup</a> for other ways and more details on setting up Lean.</p>
 <ol>
 <li>
-<p>Install the latest Lean 4 nightly through <a href="https://github.com/leanprover/elan"><code>elan</code></a>: in any bash-compatible shell, run</p>
-<pre><code class="language-sh">curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- --default-toolchain leanprover/lean4:nightly
-</code></pre>
-<p>On Windows, instead run in <code>cmd</code></p>
-<pre><code class="language-sh">curl -O --location https://raw.githubusercontent.com/leanprover/elan/master/elan-init.ps1
-powershell -f elan-init.ps1 --default-toolchain leanprover/lean4:nightly
-del elan-init.ps1
-</code></pre>
-<p>See the <a href="https://github.com/leanprover/elan">elan repo</a> for other installation options and details.</p>
-</li>
-<li>
 <p>Install <a href="https://code.visualstudio.com/">VS Code</a>.</p>
 </li>
 <li>
-<p>Open VS Code and install the <code>lean4</code> extension.</p>
+<p>Launch VS Code and install the <code>lean4</code> extension.</p>
 <p><img src="images/code-ext.png" alt="installing the vscode-lean4 extension" /></p>
 </li>
 <li>
-<p>Create a new file with the extension <code>.lean</code> and add the following code:</p>
-<pre><code class="language-lean">#eval Lean.versionString
+<p>Create a new file using  &quot;File &gt; New File&quot; and click the <code>Select a language</code> link and type in <code>lean4</code> and hit ENTER.  You should see the following popup:
+<img src="images/install_elan.png" alt="elan" /></p>
+<p>Click the &quot;Install Lean using Elan&quot; link and follow the progress
+pressing ENTER in the terminal window to install lean.  You should see some progress output like this:</p>
+<pre><code>info: syncing channel updates for 'nightly'
+info: latest update on nightly, lean version nightly-2021-12-05
+info: downloading component 'lean'
 </code></pre>
-<p>You should get a syntax-highlighted file with a &quot;Lean Infoview&quot; on the right that tells you the installed Lean version when placing your cursor on the last line.</p>
-<p><img src="images/code-success.png" alt="successful setup" /></p>
 </li>
 <li>
-<p>You are set up! You can now also run <code>lake init foo</code> from the command line to create a package, followed by <code>lake build</code> to get an executable version of your Lean program.</p>
+<p>While it is installing you can paste the following Lean program into the new file:</p>
+<pre><code class="language-lean">#eval Lean.versionString
+</code></pre>
+<p>When the install finishes the Lean Language Server should start automatically and you should get a syntax-highlighting and a &quot;Lean Infoview&quot; popping up on the right.  You will see the output of the #eval statement when
+you place your cursor at the end of the #eval statement.</p>
+<p><img src="images/code-success.png" alt="successful setup" /></p>
 </li>
 </ol>
+<p>You are set up!</p>
+<h2><a class="header" href="#create-a-lean-project" id="create-a-lean-project">Create a Lean Project</a></h2>
+<p>You can now create a Lean project in a new folder. Run <code>lake init foo</code> from the &quot;View &gt; Terminal&quot; to create a package, followed by <code>lake build</code> to get an executable version of your Lean program.
+On Linux/macOS, you first have to follow the instructions printed by the Lean installation or log out and in again for the Lean executables to be available in you terminal.</p>
 <p>Note: Packages <strong>have</strong> to be opened using &quot;File &gt; Open Folder...&quot; for imports to work.
 Saved changes are visible in other files after running &quot;Lean 4: Refresh File Dependencies&quot; (<code>Ctrl+Shift+X</code>).</p>
+<h2><a class="header" href="#troubleshooting" id="troubleshooting">Troubleshooting</a></h2>
+<p><strong>The InfoView says &quot;Waiting for Lean server to start...&quot; forever.</strong></p>
+<p>Check that the VS Code Terminal is not prompting you with <code>Press ENTER key to start Lean:</code>.  If so click in the terminal window and pressthe  ENTER key.
+If that doesn't work try also running the VS Code command <code>Developer: Reload Window</code>.</p>
 <h1><a class="header" href="#using-lean" id="using-lean">Using Lean</a></h1>
 <h1><a class="header" href="#lexical-structure" id="lexical-structure">Lexical Structure</a></h1>
 <p>This section describes the detailed lexical structure of the Lean
@@ -988,33 +993,31 @@ calc
 </ul>
 <p>Every computable definition in Lean is compiled to bytecode at definition time. Bytecode evaluation is more liberal than kernel evaluation: types and all propositional information are erased, and functions are evaluated using a stack-based virtual machine. As a result, <code>#eval</code> is more efficient than <code>#reduce,</code> and can be used to execute complex programs. In contrast, <code>#reduce</code> is designed to be small and reliable, and to produce type-correct terms at each step. Bytecode is never used in type checking, so as far as soundness and consistency are concerned, only kernel reduction is part of the trusted computing base.</p>
 <p>.. code-block:: lean</p>
-<pre><code>#reduce (λ x, x + 3) 5
-#eval   (λ x, x + 3) 5
+<pre><code>#reduce (fun x =&gt; x + 3) 5
+#eval   (fun x =&gt; x + 3) 5
 
-#reduce let x := 5 in x + 3
-#eval   let x := 5 in x + 3
+#reduce let x := 5; x + 3
+#eval   let x := 5; x + 3
 
 def f x := x + 3
 
 #reduce f 5
 #eval   f 5
 
-#reduce @nat.rec (λ n, Nat) (0 : Nat)
-                 (λ n recval : Nat, recval + n + 1) (5 : Nat)
-#eval   @nat.rec (λ n, Nat) (0 : Nat)
-                 (λ n recval : Nat, recval + n + 1) (5 : Nat)
+#reduce @Nat.rec (λ n =&gt; Nat) (0 : Nat)
+                 (λ n recval : Nat =&gt; recval + n + 1) (5 : Nat)
 
 def g : Nat → Nat
-| 0     := 0
-| (n+1) := g n + n + 1
+| 0     =&gt; 0
+| (n+1) =&gt; g n + n + 1
 
 #reduce g 5
 #eval   g 5
 
-#eval   g 50000
+#eval   g 5000
 
-example : (λ x, x + 3) 5 = 8 := rfl
-example : (λ x, f x) = f := rfl
+example : (fun x =&gt; x + 3) 5 = 8 := rfl
+example : (fun x =&gt; f x) = f := rfl
 example (p : Prop) (h₁ h₂ : p) : h₁ = h₂ := rfl
 </code></pre>
 <p>Note: the combination of proof irrelevance and singleton <code>Prop</code> elimination in ι-reduction renders the ideal version of definitional equality, as described above, undecidable. Lean's procedure for checking definitional equality is only an approximation to the ideal. It is not transitive, as illustrated by the example below. Once again, this does not compromise the consistency or soundness of Lean; it only means that Lean is more conservative in the terms it recognizes as well typed, and this does not cause problems in practice. Singleton elimination will be discussed in greater detail in <a href="inductive.html">Inductive Types</a>.</p>
@@ -1641,6 +1644,17 @@ fun ⟨m, n⟩ =&gt; m + n
 def bar₄ (p : Nat × Nat) : Nat :=
 let ⟨m, n⟩ := p in m + n
 </code></pre>
+<p>Information about the term being matched can be preserved in each branch using the syntax <code>match h : t with</code>. For example, a user may want to match a term <code>ns ++ ms : List Nat</code>, while tracking the hypothesis <code>ns ++ ms = []</code> or <code>ns ++ ms= h :: t</code> in the respective match arm:</p>
+<pre><code class="language-lean">def foo (ns ms : List Nat) (h1 : ns ++ ms ≠ []) (k : Nat -&gt; Char) : Char :=
+  match h2 : ns ++ ms with
+  -- in this arm, we have the hypothesis `h2 : ns ++ ms = []`
+  | [] =&gt; absurd h2 h1
+  -- in this arm, we have the hypothesis `h2 : ns ++ ms = h :: t`
+  | h :: t =&gt; k h
+
+-- '7'
+#eval foo [7, 8, 9] [] (by decide) Nat.digitChar
+</code></pre>
 <p>.. _structures_and_records:</p>
 <h1><a class="header" href="#structures-and-records" id="structures-and-records">Structures and Records</a></h1>
 <p>The <code>structure</code> command in Lean is used to define an inductive data type with a single constructor and to define its projections at the same time. The syntax is as follows:</p>
@@ -2054,8 +2068,8 @@ greek letter. With this feature, we can write <code>compose</code> as</p>
 <p>Note that, Lean inferred a more general type using <code>Sort</code> instead of <code>Type</code>.</p>
 <p>Although we love this feature and use it extensively when implementing Lean,
 we realize some users may feel uncomfortable with it. Thus, you can disable it using
-the command <code>set_option autoBoundImplicitLocal false</code>.</p>
-<pre><code class="language-lean">set_option autoBoundImplicitLocal false
+the command <code>set_option autoImplicit false</code>.</p>
+<pre><code class="language-lean">set_option autoImplicit false
 /- The following definition produces `unknown identifier` errors -/
 -- def compose (g : β → γ) (f : α → β) (x : α) : γ :=
 --   g (f x)
@@ -2664,7 +2678,7 @@ example (n : Nat) : (n = 0) -&gt; (binToChar n = some '0') := by
   | head (a : α) (as : List α)   : Mem a (a::as)
   | tail (a b : α) (bs : List α) : Mem a bs → Mem a (b::bs)
 
-infix:50 &quot;∈&quot; =&gt; Mem
+infix:50 (priority := high) &quot;∈&quot; =&gt; Mem
 
 theorem mem_split {a : α} {as : List α} (h : a ∈ as) : ∃ s t, as = s ++ a :: t :=
   match a, as, h with
@@ -2678,7 +2692,7 @@ Here is a similar proof using the tactic DSL.</p>
 <pre><code class="language-lean"><span class="boring">inductive Mem : α → List α → Prop where
 </span><span class="boring"> | head (a : α) (as : List α)   : Mem a (a::as)
 </span><span class="boring"> | tail (a b : α) (bs : List α) : Mem a bs → Mem a (b::bs)
-</span><span class="boring">infix:50 &quot;∈&quot; =&gt; Mem
+</span><span class="boring">infix:50 (priority := high) &quot;∈&quot; =&gt; Mem
 </span>theorem mem_split {a : α} {as : List α} (h : a ∈ as) : ∃ s t, as = s ++ a :: t := by
   match a, as, h with
   | _, _, Mem.head a bs     =&gt; exists []; exists bs; rfl
@@ -2693,7 +2707,7 @@ Here is a similar proof that uses the <code>induction</code> tactic instead of r
 <pre><code class="language-lean"><span class="boring">inductive Mem : α → List α → Prop where
 </span><span class="boring"> | head (a : α) (as : List α)   : Mem a (a::as)
 </span><span class="boring"> | tail (a b : α) (bs : List α) : Mem a bs → Mem a (b::bs)
-</span><span class="boring">infix:50 &quot;∈&quot; =&gt; Mem
+</span><span class="boring">infix:50 (priority := high) &quot;∈&quot; =&gt; Mem
 </span>theorem mem_split {a : α} {as : List α} (h : a ∈ as) : ∃ s t, as = s ++ a :: t := by
   induction as with
   | nil          =&gt; cases h
@@ -2711,7 +2725,7 @@ discriminant. Later, we show how to create more complex automation using macros.
 <pre><code class="language-lean"><span class="boring">inductive Mem : α → List α → Prop where
 </span><span class="boring"> | head (a : α) (as : List α)   : Mem a (a::as)
 </span><span class="boring"> | tail (a b : α) (bs : List α) : Mem a bs → Mem a (b::bs)
-</span><span class="boring">infix:50 &quot;∈&quot; =&gt; Mem
+</span><span class="boring">infix:50 (priority := high) &quot;∈&quot; =&gt; Mem
 </span>macro &quot;obtain &quot; p:term &quot; from &quot; d:term : tactic =&gt;
   `(tactic| match $d:term with | $p:term =&gt; ?_)
 
@@ -3128,6 +3142,38 @@ def sumOddUpTo (xs : List Nat) (threshold : Nat) : IO Nat := do
 <p>TODO: describe <code>forIn</code></p>
 <h2><a class="header" href="#try-catch" id="try-catch">Try-catch</a></h2>
 <p>TODO</p>
+<h2><a class="header" href="#returning-early-from-a-failed-match" id="returning-early-from-a-failed-match">Returning early from a failed match</a></h2>
+<p>Inside a <code>do</code> block, the pattern <code>let _ ← &lt;success&gt; | &lt;fail&gt;</code> will continue with the rest of the block if the match on the left hand side succeeds, but will execute the right hand side and exit the block on failure:</p>
+<pre><code class="language-lean">def showUserInfo (getUsername getFavoriteColor : IO (Option String)) : IO Unit := do
+  let some n ← getUsername | IO.println &quot;no username!&quot;
+  IO.println s!&quot;username: {n}&quot;
+  let some c ← getFavoriteColor | IO.println &quot;user didn't provide a favorite color!&quot;
+  IO.println s!&quot;favorite color: {c}&quot;
+
+-- username: JohnDoe
+-- favorite color: red
+#eval showUserInfo (pure &lt;| some &quot;JohnDoe&quot;) (pure &lt;| some &quot;red&quot;)
+
+-- no username
+#eval showUserInfo (pure none) (pure &lt;| some &quot;purple&quot;)
+
+-- username: JaneDoe
+-- user didn't provide a favorite color
+#eval showUserInfo (pure &lt;| some &quot;JaneDoe&quot;) (pure none)
+</code></pre>
+<h2><a class="header" href="#if-let" id="if-let">If-let</a></h2>
+<p>Inside a <code>do</code> block, users can employ the <code>if let</code> pattern to destructure actions:</p>
+<pre><code class="language-lean">def tryIncrement (getInput : IO (Option Nat)) : IO (Except String Nat) := do
+  if let some n ← getInput
+  then return Except.ok n.succ
+  else return Except.error &quot;argument was `none`&quot;
+
+-- Except.ok 2
+#eval tryIncrement (pure &lt;| some 1)
+
+-- Except.error &quot;argument was `none`&quot;
+#eval tryIncrement (pure &lt;| none)
+</code></pre>
 <h2><a class="header" href="#pattern-matching-1" id="pattern-matching-1">Pattern matching</a></h2>
 <p>TODO</p>
 <h2><a class="header" href="#monads" id="monads">Monads</a></h2>
@@ -4143,7 +4189,7 @@ general, instances may depend on other instances in complicated ways. For exampl
 you can declare an (anonymous) instance stating that if <code>a</code> has addition, then <code>Array a</code>
 has addition:</p>
 <pre><code class="language-lean">instance [Add a] : Add (Array a) where
-  add x y := Array.zipWith x y (. + .)
+  add x y := Array.zipWith x y (· + ·)
 
 #eval Add.add #[1, 2] #[3, 4]
 -- #[4, 6]
@@ -4781,27 +4827,24 @@ last expression in the body.</p>
 -- [3, 7]
 </code></pre>
 <h1><a class="header" href="#syntax-sugar-for-simple-lambda-expressions" id="syntax-sugar-for-simple-lambda-expressions">Syntax sugar for simple lambda expressions</a></h1>
-<p>Simple functions can be defined using parentheses and <code>.</code> (or <code>·</code>) as a placeholder.</p>
-<pre><code class="language-lean">#check (. + 1)
+<p>Simple functions can be defined using parentheses and <code>·</code> as a placeholder.</p>
+<pre><code class="language-lean">#check (· + 1)
 -- fun a =&gt; a + 1
-#check (· + 1)
--- fun a =&gt; a + 1
-#check (2 - .)
+#check (2 - ·)
 -- fun a =&gt; 2 - a
-#eval [1, 2, 3, 4, 5].foldl (. * .) 1
+#eval [1, 2, 3, 4, 5].foldl (· * ·) 1
 -- 120
 
 def h (x y z : Nat) :=
   x + y + z
 
-#check (h . 1 .)
+#check (h · 1 ·)
 -- fun a b =&gt; h a 1 b
 
 #eval [(1, 2), (3, 4), (5, 6)].map (·.1)
 -- [1, 3, 5]
 </code></pre>
-<p>In the previous example, the term <code>(·.1)</code> is syntax sugar for <code>fun x =&gt; x.1</code>. Note that, the ASCII version <code>(..1)</code>
-is not supported because <code>..</code> is a reserved symbol.</p>
+<p>In the previous example, the term <code>(·.1)</code> is syntax sugar for <code>fun x =&gt; x.1</code>.</p>
 <h1><a class="header" href="#pipelining" id="pipelining">Pipelining</a></h1>
 <p>Pipelining enables function calls to be chained together as successive operations. Pipelining works as follows:</p>
 <pre><code class="language-lean">def add1 x := x + 1
@@ -4816,14 +4859,14 @@ The forward pipeline <code>|&gt;</code> operator takes a function and an argumen
 In contrast, the backward pipeline <code>&lt;|</code> operator takes an argument and a function and returns a value.
 These operators are useful for minimizing the number of parentheses.</p>
 <pre><code class="language-lean">def add1Times3FilterEven (xs : List Nat) :=
-  List.filter (. % 2 == 0) (List.map (. * 3) (List.map (. + 1) xs))
+  List.filter (· % 2 == 0) (List.map (· * 3) (List.map (· + 1) xs))
 
 #eval add1Times3FilterEven [1, 2, 3, 4]
 -- [6, 12]
 
 -- Define the same function using pipes
 def add1Times3FilterEven' (xs : List Nat) :=
-  xs |&gt; List.map (. + 1) |&gt; List.map (. * 3) |&gt; List.filter (. % 2 == 0)
+  xs |&gt; List.map (· + 1) |&gt; List.map (· * 3) |&gt; List.filter (· % 2 == 0)
 
 #eval add1Times3FilterEven' [1, 2, 3, 4]
 -- [6, 12]
@@ -4831,7 +4874,7 @@ def add1Times3FilterEven' (xs : List Nat) :=
 <p>Lean also supports the operator <code>|&gt;.</code> which combines forward pipeline <code>|&gt;</code> operator with the <code>.</code> field notation.</p>
 <pre><code class="language-lean">-- Define the same function using pipes
 def add1Times3FilterEven'' (xs : List Nat) :=
-  xs.map (. + 1) |&gt;.map (. * 3) |&gt;.filter (. % 2 == 0)
+  xs.map (· + 1) |&gt;.map (· * 3) |&gt;.filter (· % 2 == 0)
 
 #eval add1Times3FilterEven'' [1, 2, 3, 4]
 -- [6, 12]
@@ -5448,7 +5491,7 @@ see also <code>.github/workflows/ci.yml</code> for the CI config.</p>
 </ul>
 <p>Lean will automatically use <a href="https://ccache.dev/">CCache</a> if available to avoid
 redundant builds, especially after stage 0 has been updated.</p>
-<h2><a class="header" href="#troubleshooting" id="troubleshooting">Troubleshooting</a></h2>
+<h2><a class="header" href="#troubleshooting-1" id="troubleshooting-1">Troubleshooting</a></h2>
 <ul>
 <li>Call <code>make</code> with an additional <code>VERBOSE=1</code> argument to print executed commands.</li>
 </ul>
@@ -5541,6 +5584,10 @@ they are installed in your MSYS setup:</p>
 <p>The following linux command will do that:</p>
 <pre><code class="language-bash">cp $(ldd lean.exe | cut -f3 -d' ' | grep mingw) .
 </code></pre>
+<p>However, if you plan to use this build to compile lean programs
+to executable binaries using <code>lake build</code> in normal Windows command
+prompt outside of msys2 environment you will also need to add a windows
+version clang to your path.</p>
 <h2><a class="header" href="#trouble-shooting" id="trouble-shooting">Trouble shooting</a></h2>
 <p><strong>-bash: gcc: command not found</strong></p>
 <p>Make sure <code>/mingw64/bin</code> is in your PATH environment.  If it is not then
@@ -5568,7 +5615,7 @@ open a folder containing your hello world lean package.</p>
 <p>When everything is working you should see something like this with a
 functioning infoview, syntax coloring and tooltips:</p>
 <p><img src="make/../images/code-wsl.png" alt="screenshot" /></p>
-<h2><a class="header" href="#troubleshooting-1" id="troubleshooting-1">Troubleshooting</a></h2>
+<h2><a class="header" href="#troubleshooting-2" id="troubleshooting-2">Troubleshooting</a></h2>
 <p><strong>lean4: Could not find Lean version by running 'lean --version'.</strong></p>
 <p>Check that the <code>lean</code> program is available in your PATH in your WSL
 environment.</p>
@@ -5620,10 +5667,12 @@ This is because modules are discovered not from a directory listing anymore but 
 <h2><a class="header" href="#editor-integration" id="editor-integration">Editor Integration</a></h2>
 <p>As in the standard Nix setup.
 After adding <code>src/</code> as an LSP workspace, it should automatically fall back to using stage 0 in there.</p>
-<p>Note that the UX of <code>emacs/vscode-dev</code> is quite different from the Make-based setup regarding the compilation of dependencies:
+<p>Note that the UX of <code>{emacs,vscode}-dev</code> is quite different from the Make-based setup regarding the compilation of dependencies:
 there is no mutable directory incrementally filled by the build that we could point the editor at for .olean files.
 Instead, <code>emacs-dev</code> will gather the individual dependency outputs from the Nix store when checking a file -- and build them on the fly when necessary.
 However, it will only ever load changes saved to disk, not ones opened in other buffers.</p>
+<p>The absence of a mutable output directory also means that the Lean server will not automatically pick up <code>.ilean</code> metadata from newly compiled files.
+Instead, you can run <code>nix run .#link-ilean</code> to symlink the <code>.ilean</code> tree of the stdlib state at that point in time to <code>src/build/lib</code>, where the server should automatically find them.</p>
 <h2><a class="header" href="#other-fun-stuff-to-do-with-nix" id="other-fun-stuff-to-do-with-nix">Other Fun Stuff to Do with Nix</a></h2>
 <p>Open Emacs with Lean set up from an arbitrary commit (without even cloning Lean beforehand... if your Nix is new enough):</p>
 <pre><code class="language-bash">nix run github:leanprover/lean4/7e4edeb#emacs-package
@@ -5867,18 +5916,6 @@ even trust the .olean files (i.e., trust 0).</p>
 <li>
 <p><code>tests/plugin</code>: tests that compiled Lean code can be loaded into
 <code>lean</code> via the <code>--plugin</code> command line option.</p>
-</li>
-<li>
-<p><code>tests/leanpkg</code>: tests the <code>leanpkg</code> program, where each sub-folder
-is a complete &quot;lean package&quot;, including:</p>
-<ul>
-<li><code>cyclic</code></li>
-<li><code>user_ext</code></li>
-<li><code>user_attr</code></li>
-<li><code>user_opt</code></li>
-<li><code>prv</code></li>
-<li><code>user_attr_app</code></li>
-</ul>
 </li>
 </ul>
 <h2><a class="header" href="#settings" id="settings">Settings</a></h2>

@@ -712,6 +712,17 @@ fun ⟨m, n⟩ =&gt; m + n
 def bar₄ (p : Nat × Nat) : Nat :=
 let ⟨m, n⟩ := p in m + n
 </code></pre>
+<p>Information about the term being matched can be preserved in each branch using the syntax <code>match h : t with</code>. For example, a user may want to match a term <code>ns ++ ms : List Nat</code>, while tracking the hypothesis <code>ns ++ ms = []</code> or <code>ns ++ ms= h :: t</code> in the respective match arm:</p>
+<pre><code class="language-lean">def foo (ns ms : List Nat) (h1 : ns ++ ms ≠ []) (k : Nat -&gt; Char) : Char :=
+  match h2 : ns ++ ms with
+  -- in this arm, we have the hypothesis `h2 : ns ++ ms = []`
+  | [] =&gt; absurd h2 h1
+  -- in this arm, we have the hypothesis `h2 : ns ++ ms = h :: t`
+  | h :: t =&gt; k h
+
+-- '7'
+#eval foo [7, 8, 9] [] (by decide) Nat.digitChar
+</code></pre>
 <p>.. _structures_and_records:</p>
 <h1><a class="header" href="#structures-and-records" id="structures-and-records">Structures and Records</a></h1>
 <p>The <code>structure</code> command in Lean is used to define an inductive data type with a single constructor and to define its projections at the same time. The syntax is as follows:</p>

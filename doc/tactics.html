@@ -381,7 +381,7 @@ example (n : Nat) : (n = 0) -&gt; (binToChar n = some '0') := by
   | head (a : α) (as : List α)   : Mem a (a::as)
   | tail (a b : α) (bs : List α) : Mem a bs → Mem a (b::bs)
 
-infix:50 &quot;∈&quot; =&gt; Mem
+infix:50 (priority := high) &quot;∈&quot; =&gt; Mem
 
 theorem mem_split {a : α} {as : List α} (h : a ∈ as) : ∃ s t, as = s ++ a :: t :=
   match a, as, h with
@@ -395,7 +395,7 @@ Here is a similar proof using the tactic DSL.</p>
 <pre><code class="language-lean"><span class="boring">inductive Mem : α → List α → Prop where
 </span><span class="boring"> | head (a : α) (as : List α)   : Mem a (a::as)
 </span><span class="boring"> | tail (a b : α) (bs : List α) : Mem a bs → Mem a (b::bs)
-</span><span class="boring">infix:50 &quot;∈&quot; =&gt; Mem
+</span><span class="boring">infix:50 (priority := high) &quot;∈&quot; =&gt; Mem
 </span>theorem mem_split {a : α} {as : List α} (h : a ∈ as) : ∃ s t, as = s ++ a :: t := by
   match a, as, h with
   | _, _, Mem.head a bs     =&gt; exists []; exists bs; rfl
@@ -410,7 +410,7 @@ Here is a similar proof that uses the <code>induction</code> tactic instead of r
 <pre><code class="language-lean"><span class="boring">inductive Mem : α → List α → Prop where
 </span><span class="boring"> | head (a : α) (as : List α)   : Mem a (a::as)
 </span><span class="boring"> | tail (a b : α) (bs : List α) : Mem a bs → Mem a (b::bs)
-</span><span class="boring">infix:50 &quot;∈&quot; =&gt; Mem
+</span><span class="boring">infix:50 (priority := high) &quot;∈&quot; =&gt; Mem
 </span>theorem mem_split {a : α} {as : List α} (h : a ∈ as) : ∃ s t, as = s ++ a :: t := by
   induction as with
   | nil          =&gt; cases h
@@ -428,7 +428,7 @@ discriminant. Later, we show how to create more complex automation using macros.
 <pre><code class="language-lean"><span class="boring">inductive Mem : α → List α → Prop where
 </span><span class="boring"> | head (a : α) (as : List α)   : Mem a (a::as)
 </span><span class="boring"> | tail (a b : α) (bs : List α) : Mem a bs → Mem a (b::bs)
-</span><span class="boring">infix:50 &quot;∈&quot; =&gt; Mem
+</span><span class="boring">infix:50 (priority := high) &quot;∈&quot; =&gt; Mem
 </span>macro &quot;obtain &quot; p:term &quot; from &quot; d:term : tactic =&gt;
   `(tactic| match $d:term with | $p:term =&gt; ?_)
 

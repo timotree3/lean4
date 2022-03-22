@@ -475,6 +475,38 @@ def sumOddUpTo (xs : List Nat) (threshold : Nat) : IO Nat := do
 <p>TODO: describe <code>forIn</code></p>
 <h2><a class="header" href="#try-catch" id="try-catch">Try-catch</a></h2>
 <p>TODO</p>
+<h2><a class="header" href="#returning-early-from-a-failed-match" id="returning-early-from-a-failed-match">Returning early from a failed match</a></h2>
+<p>Inside a <code>do</code> block, the pattern <code>let _ ← &lt;success&gt; | &lt;fail&gt;</code> will continue with the rest of the block if the match on the left hand side succeeds, but will execute the right hand side and exit the block on failure:</p>
+<pre><code class="language-lean">def showUserInfo (getUsername getFavoriteColor : IO (Option String)) : IO Unit := do
+  let some n ← getUsername | IO.println &quot;no username!&quot;
+  IO.println s!&quot;username: {n}&quot;
+  let some c ← getFavoriteColor | IO.println &quot;user didn't provide a favorite color!&quot;
+  IO.println s!&quot;favorite color: {c}&quot;
+
+-- username: JohnDoe
+-- favorite color: red
+#eval showUserInfo (pure &lt;| some &quot;JohnDoe&quot;) (pure &lt;| some &quot;red&quot;)
+
+-- no username
+#eval showUserInfo (pure none) (pure &lt;| some &quot;purple&quot;)
+
+-- username: JaneDoe
+-- user didn't provide a favorite color
+#eval showUserInfo (pure &lt;| some &quot;JaneDoe&quot;) (pure none)
+</code></pre>
+<h2><a class="header" href="#if-let" id="if-let">If-let</a></h2>
+<p>Inside a <code>do</code> block, users can employ the <code>if let</code> pattern to destructure actions:</p>
+<pre><code class="language-lean">def tryIncrement (getInput : IO (Option Nat)) : IO (Except String Nat) := do
+  if let some n ← getInput
+  then return Except.ok n.succ
+  else return Except.error &quot;argument was `none`&quot;
+
+-- Except.ok 2
+#eval tryIncrement (pure &lt;| some 1)
+
+-- Except.error &quot;argument was `none`&quot;
+#eval tryIncrement (pure &lt;| none)
+</code></pre>
 <h2><a class="header" href="#pattern-matching" id="pattern-matching">Pattern matching</a></h2>
 <p>TODO</p>
 <h2><a class="header" href="#monads" id="monads">Monads</a></h2>

@@ -227,7 +227,7 @@ It can be set up analogously as a cache for your own project.</p>
 <pre><code class="language-bash">$ nix flake new mypkg -t github:leanprover/lean4
 </code></pre>
 <p>to create a new Lean package in directory <code>mypkg</code> using the latest commit of Lean 4.
-Such packages follow the same directory layout as described in the basic setup above, except for a <code>leanpkg.toml</code>/<code>lakefile.lean</code> replaced by a <code>flake.nix</code> file set up so you can run Nix commands on it, for example:</p>
+Such packages follow the same directory layout as described in the basic setup above, except for a <code>lakefile.lean</code> replaced by a <code>flake.nix</code> file set up so you can run Nix commands on it, for example:</p>
 <pre><code class="language-bash">$ nix build  # build package and all dependencies
 $ nix build .#executable  # compile `main` definition into executable (after you've added one)
 $ nix run .#emacs-dev  # open a pinned version of Emacs with lean4-mode fully set up
@@ -251,7 +251,7 @@ This includes selecting the correct stage of Lean (which it will compile on the 
 <pre><code class="language-bash">nix-collect-garbage
 </code></pre>
 <p>This will remove everything not reachable from &quot;GC roots&quot; such as the <code>./result</code> symlink created by <code>nix build</code>.</p>
-<p>Note that the package information in <code>flake.nix</code> is currently completely independent from <code>leanpkg.toml</code> used in the basic setup.
+<p>Note that the package information in <code>flake.nix</code> is currently completely independent from <code>lakefile.lean</code> used in the basic setup.
 Unifying the two formats is TBD.</p>
 
                     </main>

@@ -218,6 +218,10 @@ they are installed in your MSYS setup:</p>
 <p>The following linux command will do that:</p>
 <pre><code class="language-bash">cp $(ldd lean.exe | cut -f3 -d' ' | grep mingw) .
 </code></pre>
+<p>However, if you plan to use this build to compile lean programs
+to executable binaries using <code>lake build</code> in normal Windows command
+prompt outside of msys2 environment you will also need to add a windows
+version clang to your path.</p>
 <h2><a class="header" href="#trouble-shooting" id="trouble-shooting">Trouble shooting</a></h2>
 <p><strong>-bash: gcc: command not found</strong></p>
 <p>Make sure <code>/mingw64/bin</code> is in your PATH environment.  If it is not then

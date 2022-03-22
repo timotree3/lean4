@@ -207,10 +207,12 @@ This is because modules are discovered not from a directory listing anymore but 
 <h2><a class="header" href="#editor-integration" id="editor-integration">Editor Integration</a></h2>
 <p>As in the standard Nix setup.
 After adding <code>src/</code> as an LSP workspace, it should automatically fall back to using stage 0 in there.</p>
-<p>Note that the UX of <code>emacs/vscode-dev</code> is quite different from the Make-based setup regarding the compilation of dependencies:
+<p>Note that the UX of <code>{emacs,vscode}-dev</code> is quite different from the Make-based setup regarding the compilation of dependencies:
 there is no mutable directory incrementally filled by the build that we could point the editor at for .olean files.
 Instead, <code>emacs-dev</code> will gather the individual dependency outputs from the Nix store when checking a file -- and build them on the fly when necessary.
 However, it will only ever load changes saved to disk, not ones opened in other buffers.</p>
+<p>The absence of a mutable output directory also means that the Lean server will not automatically pick up <code>.ilean</code> metadata from newly compiled files.
+Instead, you can run <code>nix run .#link-ilean</code> to symlink the <code>.ilean</code> tree of the stdlib state at that point in time to <code>src/build/lib</code>, where the server should automatically find them.</p>
 <h2><a class="header" href="#other-fun-stuff-to-do-with-nix" id="other-fun-stuff-to-do-with-nix">Other Fun Stuff to Do with Nix</a></h2>
 <p>Open Emacs with Lean set up from an arbitrary commit (without even cloning Lean beforehand... if your Nix is new enough):</p>
 <pre><code class="language-bash">nix run github:leanprover/lean4/7e4edeb#emacs-package

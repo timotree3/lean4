@@ -195,8 +195,8 @@ greek letter. With this feature, we can write <code>compose</code> as</p>
 <p>Note that, Lean inferred a more general type using <code>Sort</code> instead of <code>Type</code>.</p>
 <p>Although we love this feature and use it extensively when implementing Lean,
 we realize some users may feel uncomfortable with it. Thus, you can disable it using
-the command <code>set_option autoBoundImplicitLocal false</code>.</p>
-<pre><code class="language-lean">set_option autoBoundImplicitLocal false
+the command <code>set_option autoImplicit false</code>.</p>
+<pre><code class="language-lean">set_option autoImplicit false
 /- The following definition produces `unknown identifier` errors -/
 -- def compose (g : β → γ) (f : α → β) (x : α) : γ :=
 --   g (f x)
