@@ -178,6 +178,21 @@ establish that a function always terminates.</p>
 </code></pre>
 <p>In the previous example, <code>g x p</code> only terminates if there is a <code>y &gt;= x</code> such that <code>p y</code> returns <code>true</code>.
 Of course, <code>g 0 (fun x =&gt; false)</code> never terminates.</p>
+<p>However, the use of <code>partial</code> is restricted to functions whose return type is not empty so the soundness
+of the system is not compromised.</p>
+<pre><code class="language-lean ignore">partial def loop? : α := -- failed to compile partial definition 'loop?', failed to
+  loop?                  -- show that type is inhabited and non empty
+
+partial def loop [Inhabited α] : α := -- compiles
+  loop
+
+example : True := -- accepted
+  loop
+
+example : False :=
+  loop -- failed to synthesize instance Inhabited False
+</code></pre>
+<p>If we were able to partially define <code>loop?</code>, we could prove <code>False</code> with it.</p>
 <h1 id="lambda-expressions"><a class="header" href="#lambda-expressions">Lambda expressions</a></h1>
 <p>A lambda expression is an unnamed function.
 You define lambda expressions by using the <code>fun</code> keyword. A lambda expression resembles a function definition, except that instead of the <code>:=</code> token,
