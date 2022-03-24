@@ -4,49 +4,28 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Lean Manual</title>
-        
         <meta name="robots" content="noindex" />
-        
-        
-
-
         <!-- Custom HTML head -->
-        
-
-
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        
         <link rel="icon" href="favicon.svg">
-        
-        
         <link rel="shortcut icon" href="favicon.png">
-        
         <link rel="stylesheet" href="css/variables.css">
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/chrome.css">
-        
         <link rel="stylesheet" href="css/print.css" media="print">
-        
-
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        
         <link rel="stylesheet" href="fonts/fonts.css">
-        
-
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
         <link rel="stylesheet" href="tomorrow-night.css">
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        
-
-        
     </head>
     <body>
         <!-- Provide site root to javascript -->
@@ -61,11 +40,11 @@
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
 
-                if (theme.startsWith('"') && theme.endsWith('"')) {
+                if (theme && theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
                 }
 
-                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                if (sidebar && sidebar.startsWith('"') && sidebar.endsWith('"')) {
                     localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
                 }
             } catch (e) { }
@@ -105,7 +84,6 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                
                 <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
@@ -122,33 +100,26 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        
                         <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
-                        
                     </div>
 
                     <h1 class="menu-title">Lean Manual</h1>
 
                     <div class="right-buttons">
-                        
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        
-                        
                         <a href="https://github.com/leanprover/lean4" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        
                     </div>
                 </div>
 
-                
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -156,8 +127,6 @@
                         </ul>
                     </div>
                 </div>
-                
-
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script type="text/javascript">
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
@@ -169,7 +138,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#what-is-lean" id="what-is-lean">What is Lean</a></h1>
+                        <h1 id="what-is-lean"><a class="header" href="#what-is-lean">What is Lean</a></h1>
 <p>Lean is a functional programming language that makes it easy to
 write correct and maintainable code.
 You can also use Lean as an interactive theorem prover.</p>
@@ -206,7 +175,7 @@ def main : IO Unit :=
 <li>Multithreading</li>
 <li>Verification: you can prove properties of your functions using Lean itself</li>
 </ul>
-<h1><a class="header" href="#tour-of-lean" id="tour-of-lean">Tour of Lean</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tour-of-lean"><a class="header" href="#tour-of-lean">Tour of Lean</a></h1>
 <p>The best way to learn about Lean is to read and write Lean code.
 This article will act as a tour through some of the key features of the Lean
 language and give you some code snippets that you can execute on your machine.
@@ -214,7 +183,7 @@ To learn about setting up a development environment, check out <a href="./setup.
 <p>There are two primary concepts in Lean: functions and types.
 This tour will emphasize features of the language which fall into
 these two concepts.</p>
-<h1><a class="header" href="#functions-and-namespaces" id="functions-and-namespaces">Functions and Namespaces</a></h1>
+<h1 id="functions-and-namespaces"><a class="header" href="#functions-and-namespaces">Functions and Namespaces</a></h1>
 <p>The most fundamental pieces of any Lean program are functions organized into namespaces.
 <a href="./functions.html">Functions</a> perform work on inputs to produce outputs,
 and they are organized under <a href="./namespaces.html">namespaces</a>,
@@ -398,14 +367,14 @@ theorem Weekday.nextOfPrevious' (d : Weekday) : next (previous d) = d := by
   cases d       -- A proof by case distinction
   all_goals rfl  -- Each case is solved using `rfl`
 </code></pre>
-<h1><a class="header" href="#setting-up-lean" id="setting-up-lean">Setting Up Lean</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="setting-up-lean"><a class="header" href="#setting-up-lean">Setting Up Lean</a></h1>
 <p>There are currently two ways to set up a Lean 4 development environment:</p>
 <ul>
 <li><a href="./setup.html#basic-setup">basic setup</a> (Linux/macOS/Windows): uses <a href="https://github.com/leanprover/elan"><code>elan</code></a> + your preinstalled editor</li>
 <li><a href="./setup.html#nix-setup">Nix setup</a> (Linux/macOS/WSL): uses the <a href="https://nixos.org/nix/">Nix</a> package manager for installing all dependencies localized to your project</li>
 </ul>
 <p>See also the <a href="./quickstart.html">quickstart</a> instructions for using the basic setup with VS Code as the editor.</p>
-<h2><a class="header" href="#basic-setup" id="basic-setup">Basic Setup</a></h2>
+<h2 id="basic-setup"><a class="header" href="#basic-setup">Basic Setup</a></h2>
 <p>Release builds for all supported platforms are available at <a href="https://github.com/leanprover/lean4/releases">https://github.com/leanprover/lean4/releases</a>.
 Instead of downloading these and setting up the paths manually, however, it is recommended to use the Lean version manager <a href="https://github.com/leanprover/elan"><code>elan</code></a> instead:</p>
 <pre><code class="language-sh">$ elan self update  # in case you haven't updated elan in a while
@@ -416,7 +385,7 @@ $ elan default leanprover/lean4:nightly
 # alternatively, activate Lean 4 in current directory only
 $ elan override set leanprover/lean4:stable
 </code></pre>
-<h3><a class="header" href="#lake" id="lake"><code>lake</code></a></h3>
+<h3 id="lake"><a class="header" href="#lake"><code>lake</code></a></h3>
 <p>Lean 4 comes with a package manager named <code>lake</code>.
 Use <code>lake init foo</code> to initialize a Lean package <code>foo</code> in the current directory, and <code>lake build</code> to typecheck and build it as well as all its dependencies. Use <code>lake help</code> to learn about further commands.
 The general directory structure of a package <code>foo</code> is</p>
@@ -431,10 +400,10 @@ build/         # `lake` build output directory
 <p>After running <code>lake build</code> you will see a binary named <code>./build/bin/foo</code> and when you run it you should see the output:</p>
 <pre><code>Hello, world!
 </code></pre>
-<h3><a class="header" href="#editing" id="editing">Editing</a></h3>
+<h3 id="editing"><a class="header" href="#editing">Editing</a></h3>
 <p>Lean implements the <a href="https://microsoft.github.io/language-server-protocol/">Language Server Protocol</a> that can be used for interactive development in <a href="https://github.com/leanprover/lean4-mode">Emacs</a>, <a href="https://github.com/leanprover-community/vscode-lean4">VS Code</a>, and possibly other editors.</p>
 <p>Changes must be saved to be visible in other files, which must then be invalidated using an editor command (see links above).</p>
-<h2><a class="header" href="#nix-setup" id="nix-setup">Nix Setup</a></h2>
+<h2 id="nix-setup"><a class="header" href="#nix-setup">Nix Setup</a></h2>
 <p>The alternative setup based on Nix provides a perfectly reproducible development environment for your project from the Lean version down to the editor and Lean extension.
 However, it is still experimental and subject to change; in particular, it is heavily based on an unreleased version of Nix enabling <a href="https://www.tweag.io/blog/2020-05-25-flakes/">Nix Flakes</a>. The setup has been tested on NixOS, other Linux distributions, and macOS.</p>
 <p>After installing (any version of) Nix (<a href="https://nixos.org/download.html">https://nixos.org/download.html</a>), you can easily open a shell with the particular pre-release version of Nix needed by and tested with our setup (called the &quot;Lean shell&quot; from here on):</p>
@@ -453,7 +422,7 @@ trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDS
 <p>The <a href="https://cachix.org/">Cachix</a> integration will magically beam any build steps already executed by the CI right onto your machine when calling Nix commands in the shell opened above.
 It can be set up analogously as a cache for your own project.</p>
 <p>Note: Your system Nix might print warnings about not knowing some of the settings used by the Lean shell Nix, which can be ignored.</p>
-<h3><a class="header" href="#basic-commands" id="basic-commands">Basic Commands</a></h3>
+<h3 id="basic-commands"><a class="header" href="#basic-commands">Basic Commands</a></h3>
 <p>From a Lean shell, run</p>
 <pre><code class="language-bash">$ nix flake new mypkg -t github:leanprover/lean4
 </code></pre>
@@ -484,7 +453,7 @@ This includes selecting the correct stage of Lean (which it will compile on the 
 <p>This will remove everything not reachable from &quot;GC roots&quot; such as the <code>./result</code> symlink created by <code>nix build</code>.</p>
 <p>Note that the package information in <code>flake.nix</code> is currently completely independent from <code>lakefile.lean</code> used in the basic setup.
 Unifying the two formats is TBD.</p>
-<h1><a class="header" href="#quickstart" id="quickstart">Quickstart</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="quickstart"><a class="header" href="#quickstart">Quickstart</a></h1>
 <p>These instructions will walk you through setting up Lean using the &quot;basic&quot; setup and VS Code as the editor.
 See <a href="./setup.html">Setup</a> for other ways and more details on setting up Lean.</p>
 <ol>
@@ -515,28 +484,28 @@ you place your cursor at the end of the #eval statement.</p>
 </li>
 </ol>
 <p>You are set up!</p>
-<h2><a class="header" href="#create-a-lean-project" id="create-a-lean-project">Create a Lean Project</a></h2>
+<h2 id="create-a-lean-project"><a class="header" href="#create-a-lean-project">Create a Lean Project</a></h2>
 <p>You can now create a Lean project in a new folder. Run <code>lake init foo</code> from the &quot;View &gt; Terminal&quot; to create a package, followed by <code>lake build</code> to get an executable version of your Lean program.
 On Linux/macOS, you first have to follow the instructions printed by the Lean installation or log out and in again for the Lean executables to be available in you terminal.</p>
 <p>Note: Packages <strong>have</strong> to be opened using &quot;File &gt; Open Folder...&quot; for imports to work.
 Saved changes are visible in other files after running &quot;Lean 4: Refresh File Dependencies&quot; (<code>Ctrl+Shift+X</code>).</p>
-<h2><a class="header" href="#troubleshooting" id="troubleshooting">Troubleshooting</a></h2>
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
 <p><strong>The InfoView says &quot;Waiting for Lean server to start...&quot; forever.</strong></p>
 <p>Check that the VS Code Terminal is not prompting you with <code>Press ENTER key to start Lean:</code>.  If so click in the terminal window and pressthe  ENTER key.
 If that doesn't work try also running the VS Code command <code>Developer: Reload Window</code>.</p>
-<h1><a class="header" href="#theorem-proving-in-lean" id="theorem-proving-in-lean">Theorem Proving in Lean</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="theorem-proving-in-lean"><a class="header" href="#theorem-proving-in-lean">Theorem Proving in Lean</a></h1>
 <p>We strongly encourage you to read the book <a href="https://leanprover.github.io/theorem_proving_in_lean4/title_page.html">Theorem Proving in Lean</a>.
 Many Lean users consider it to be the Lean Bible.</p>
-<h1><a class="header" href="#examples" id="examples">Examples</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="examples"><a class="header" href="#examples">Examples</a></h1>
 <ul>
 <li><a href="https://github.com/leanprover/lean4/blob/master/doc/examples/tc.lean">A Certified Type Checker</a></li>
 <li><a href="https://github.com/leanprover/lean4/blob/master/doc/examples/interp.lean">The Well-Typed Interpreter</a></li>
 <li><a href="https://github.com/leanprover/lean4/blob/master/doc/examples/deBruijn.lean">Dependent de Bruijn Indices</a></li>
 </ul>
-<h1><a class="header" href="#organizational-features" id="organizational-features">Organizational features</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="organizational-features"><a class="header" href="#organizational-features">Organizational features</a></h1>
 <p>In this section we introduce some organizational features of Lean that are not a part of its kernel per se,
 but make it possible to work in the framework more efficiently.</p>
-<h1><a class="header" href="#variables-and-sections" id="variables-and-sections">Variables and Sections</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="variables-and-sections"><a class="header" href="#variables-and-sections">Variables and Sections</a></h1>
 <p>Consider the following three function definitions:</p>
 <pre><code class="language-lean">def compose (α β γ : Type) (g : β → γ) (f : α → β) (x : α) : γ :=
   g (f x)
@@ -594,7 +563,7 @@ end useful
 you can use an anonymous <code>section</code> / <code>end</code> pair.
 If you do name a section, however, you have to close it using the same name.
 Sections can also be nested, which allows you to declare new variables incrementally.</p>
-<h1><a class="header" href="#namespaces" id="namespaces">Namespaces</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="namespaces"><a class="header" href="#namespaces">Namespaces</a></h1>
 <p>Lean provides us with the ability to group definitions into nested, hierarchical <em>namespaces</em>:</p>
 <pre><code class="language-lean">namespace Foo
   def a : Nat := 5
@@ -690,7 +659,7 @@ Sections are also useful for delimiting the scope of commands such as <code>set_
 <p>In many respects, however, a <code>namespace ... end</code> block behaves the same as a <code>section ... end</code> block.
 In particular, if you use the <code>variable</code> command within a namespace, its scope is limited to the namespace.
 Similarly, if you use an <code>open</code> command within a namespace, its effects disappear when the namespace is closed.</p>
-<h2><a class="header" href="#implicit-arguments" id="implicit-arguments">Implicit Arguments</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="implicit-arguments"><a class="header" href="#implicit-arguments">Implicit Arguments</a></h2>
 <p>Suppose we define the <code>compose</code> function as.</p>
 <pre><code class="language-lean">def compose (α β γ : Type) (g : β → γ) (f : α → β) (x : α) : γ :=
   g (f x)
@@ -803,7 +772,7 @@ each argument represents.</p>
 #check ident (α := Nat)  -- Nat → Nat
 #check ident (α := Bool) -- Bool → Bool
 </code></pre>
-<h2><a class="header" href="#auto-bound-implicit-arguments" id="auto-bound-implicit-arguments">Auto Bound Implicit Arguments</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="auto-bound-implicit-arguments"><a class="header" href="#auto-bound-implicit-arguments">Auto Bound Implicit Arguments</a></h2>
 <p>In the previous section, we have shown how implicit arguments make functions more convenient to use.
 However, functions such as <code>compose</code> are still quite verbose to define. Note that the universe
 polymorphic <code>compose</code> is even more verbose than the one previously defined.</p>
@@ -837,7 +806,7 @@ the command <code>set_option autoImplicit false</code>.</p>
 -- def compose (g : β → γ) (f : α → β) (x : α) : γ :=
 --   g (f x)
 </code></pre>
-<h1><a class="header" href="#syntax-extensions" id="syntax-extensions">Syntax Extensions</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="syntax-extensions"><a class="header" href="#syntax-extensions">Syntax Extensions</a></h1>
 <p><a href="lexical_structure.html">Lean's syntax</a> can be extended and customized
 by users at every level, ranging from basic &quot;mixfix&quot; notations to
 custom elaborators. In fact, all builtin syntax is parsed and
@@ -854,15 +823,15 @@ to factor out common boilerplate code into (well-behaved) macros and
 to embed entire custom domain specific languages (DSLs) to textually
 encode subproblems efficiently and readably can be of great benefit to
 both programmers and proof engineers alike.</p>
-<h2><a class="header" href="#syntax-and-macros" id="syntax-and-macros">Syntax and Macros</a></h2>
-<h2><a class="header" href="#elaborators" id="elaborators">Elaborators</a></h2>
+<h2 id="syntax-and-macros"><a class="header" href="#syntax-and-macros">Syntax and Macros</a></h2>
+<h2 id="elaborators"><a class="header" href="#elaborators">Elaborators</a></h2>
 <p>TODO. See <a href="https://youtu.be/hxQ1vvhYN_U">Lean Together 2021: Metaprogramming in Lean
 4</a> for an overview as well <a href="https://youtu.be/vy4JWIiiXSY">the
 continuation</a> about tactic programming.
 For more information on antiquotations, see also §4.1 of <a href="https://arxiv.org/pdf/2001.10490.pdf#page=11">Beyond
 Notations: Hygienic Macro Expansion for Theorem Proving
 Languages</a>.</p>
-<h1><a class="header" href="#the-do-notation" id="the-do-notation">The <code>do</code> notation</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="the-do-notation"><a class="header" href="#the-do-notation">The <code>do</code> notation</a></h1>
 <p>Lean is a pure functional programming language, but you can write effectful code using the <code>do</code> embedded domain specific language (DSL). The following simple program prints two strings &quot;hello&quot; and &quot;world&quot; in the standard output and terminates with exit code 0. Note that the type of the program is <code>IO UInt32</code>. You can read this type as the type of values that perform input-output effects and produce a value of type <code>UInt32</code>.</p>
 <pre><code class="language-lean">def main : IO UInt32 := do
   IO.println &quot;hello&quot;
@@ -944,7 +913,7 @@ def f (x : Nat) : IO Unit := do
 -- value: 10
 -- 10 is greater than 0
 </code></pre>
-<h2><a class="header" href="#nested-actions" id="nested-actions">Nested actions</a></h2>
+<h2 id="nested-actions"><a class="header" href="#nested-actions">Nested actions</a></h2>
 <p>Note that we cannot write <code>if isGreaterThan0 x then ... else ...</code> because the condition in a <code>if-then-else</code> is a <strong>pure</strong> value without effects, but <code>isGreaterThan0 x</code> has type <code>IO Bool</code>. You can use the nested action notation to avoid this annoyance. Here is an equivalent definition for <code>f</code> using a nested action.</p>
 <pre><code class="language-lean"><span class="boring">def isGreaterThan0 (x : Nat) : IO Bool := do
 </span><span class="boring"> IO.println s!&quot;x: {x}&quot;
@@ -1018,7 +987,7 @@ def f2 (x y : Nat) : IO Unit := do
   else
     pure ()
 </code></pre>
-<h2><a class="header" href="#if-then-notation" id="if-then-notation"><code>if-then</code> notation</a></h2>
+<h2 id="if-then-notation"><a class="header" href="#if-then-notation"><code>if-then</code> notation</a></h2>
 <p>In the <code>do</code> DSL, we can write <code>if c then action</code> as a shorthand for <code>if c then action else pure ()</code>. Here is the method <code>f2</code> using this shorthand.</p>
 <pre><code class="language-lean"><span class="boring">def isGreaterThan0 (x : Nat) : IO Bool := do
 </span><span class="boring"> IO.println s!&quot;x: {x}&quot;
@@ -1029,7 +998,7 @@ def f2 (x y : Nat) : IO Unit := do
     if (&lt;- isGreaterThan0 y) then
       IO.println s!&quot;{x} and {y} are greater than 0&quot;
 </code></pre>
-<h2><a class="header" href="#reassignments" id="reassignments">Reassignments</a></h2>
+<h2 id="reassignments"><a class="header" href="#reassignments">Reassignments</a></h2>
 <p>When writing effectful code, it is natural to think imperatively.
 For example, suppose we want to create an empty array <code>xs</code>,
 add <code>0</code> if some condition holds, add <code>1</code> if another condition holds,
@@ -1087,7 +1056,7 @@ The <code>do</code> DSL offers the variable reassignment feature to make this ki
 -- #[0, 1]
 </code></pre>
 <p>The notation <code>x &lt;- action</code> reassigns <code>x</code> with the value produced by the action. It is equivalent to <code>x := (&lt;- action)</code></p>
-<h2><a class="header" href="#iteration" id="iteration">Iteration</a></h2>
+<h2 id="iteration"><a class="header" href="#iteration">Iteration</a></h2>
 <p>The <code>do</code> DSL provides a unified notation for iterating over datastructures. Here are a few examples.</p>
 <pre><code class="language-lean">def sum (xs : Array Nat) : IO Nat := do
   let mut s := 0
@@ -1168,9 +1137,9 @@ def sumOddUpTo (xs : List Nat) (threshold : Nat) : IO Nat := do
 -- 45
 </code></pre>
 <p>TODO: describe <code>forIn</code></p>
-<h2><a class="header" href="#try-catch" id="try-catch">Try-catch</a></h2>
+<h2 id="try-catch"><a class="header" href="#try-catch">Try-catch</a></h2>
 <p>TODO</p>
-<h2><a class="header" href="#returning-early-from-a-failed-match" id="returning-early-from-a-failed-match">Returning early from a failed match</a></h2>
+<h2 id="returning-early-from-a-failed-match"><a class="header" href="#returning-early-from-a-failed-match">Returning early from a failed match</a></h2>
 <p>Inside a <code>do</code> block, the pattern <code>let _ ← &lt;success&gt; | &lt;fail&gt;</code> will continue with the rest of the block if the match on the left hand side succeeds, but will execute the right hand side and exit the block on failure:</p>
 <pre><code class="language-lean">def showUserInfo (getUsername getFavoriteColor : IO (Option String)) : IO Unit := do
   let some n ← getUsername | IO.println &quot;no username!&quot;
@@ -1189,7 +1158,7 @@ def sumOddUpTo (xs : List Nat) (threshold : Nat) : IO Nat := do
 -- user didn't provide a favorite color
 #eval showUserInfo (pure &lt;| some &quot;JaneDoe&quot;) (pure none)
 </code></pre>
-<h2><a class="header" href="#if-let" id="if-let">If-let</a></h2>
+<h2 id="if-let"><a class="header" href="#if-let">If-let</a></h2>
 <p>Inside a <code>do</code> block, users can employ the <code>if let</code> pattern to destructure actions:</p>
 <pre><code class="language-lean">def tryIncrement (getInput : IO (Option Nat)) : IO (Except String Nat) := do
   if let some n ← getInput
@@ -1202,21 +1171,21 @@ def sumOddUpTo (xs : List Nat) (threshold : Nat) : IO Nat := do
 -- Except.error &quot;argument was `none`&quot;
 #eval tryIncrement (pure &lt;| none)
 </code></pre>
-<h2><a class="header" href="#pattern-matching" id="pattern-matching">Pattern matching</a></h2>
+<h2 id="pattern-matching"><a class="header" href="#pattern-matching">Pattern matching</a></h2>
 <p>TODO</p>
-<h2><a class="header" href="#monads" id="monads">Monads</a></h2>
+<h2 id="monads"><a class="header" href="#monads">Monads</a></h2>
 <p>TODO</p>
-<h2><a class="header" href="#readert" id="readert">ReaderT</a></h2>
+<h2 id="readert"><a class="header" href="#readert">ReaderT</a></h2>
 <p>TODO</p>
-<h2><a class="header" href="#statet" id="statet">StateT</a></h2>
+<h2 id="statet"><a class="header" href="#statet">StateT</a></h2>
 <p>TODO</p>
-<h2><a class="header" href="#statereft" id="statereft">StateRefT</a></h2>
+<h2 id="statereft"><a class="header" href="#statereft">StateRefT</a></h2>
 <p>TODO</p>
-<h2><a class="header" href="#exceptt" id="exceptt">ExceptT</a></h2>
+<h2 id="exceptt"><a class="header" href="#exceptt">ExceptT</a></h2>
 <p>TODO</p>
-<h2><a class="header" href="#monadlift-and-automatic-lifting" id="monadlift-and-automatic-lifting">MonadLift and automatic lifting</a></h2>
+<h2 id="monadlift-and-automatic-lifting"><a class="header" href="#monadlift-and-automatic-lifting">MonadLift and automatic lifting</a></h2>
 <p>TODO</p>
-<h1><a class="header" href="#notations-and-precedence" id="notations-and-precedence">Notations and Precedence</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="notations-and-precedence"><a class="header" href="#notations-and-precedence">Notations and Precedence</a></h1>
 <p>The most basic syntax extension commands allow introducing new (or
 overloading existing) prefix, infix, and postfix operators.</p>
 <pre><code class="language-lean">infixl:65   &quot; + &quot; =&gt; HAdd.hAdd  -- left-associative
@@ -1280,7 +1249,7 @@ before chaining, would stop parsing after <code>1 + 2</code>. If there are
 multiple notations accepting the same longest parse, the choice will
 be delayed until elaboration, which will fail unless exactly one
 overload is type correct.</p>
-<h1><a class="header" href="#string-interpolation" id="string-interpolation">String interpolation</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="string-interpolation"><a class="header" href="#string-interpolation">String interpolation</a></h1>
 <p>The <code>s!</code> prefix identifies a string literal as an interpolated string.
 An interpolated string is a string literal that might contain interpolation expressions.
 When an interpolated string is resolved to a result string, items with interpolation expressions are
@@ -1298,7 +1267,7 @@ def age  := 28
 -- `println! &lt;interpolated-string&gt;` is a macro for `IO.println s!&lt;interpolated-string&gt;`
 #eval println! &quot;Hello, {name}! Are you {age} years old?&quot;
 </code></pre>
-<h1><a class="header" href="#structure-of-an-interpolated-string" id="structure-of-an-interpolated-string">Structure of an interpolated string</a></h1>
+<h1 id="structure-of-an-interpolated-string"><a class="header" href="#structure-of-an-interpolated-string">Structure of an interpolated string</a></h1>
 <p>To identify a string literal as an interpolated string, prepend it with <code>s!</code>.
 Terms inside braces <code>{}</code> are ordinary expressions whose type implements the type class <code>ToString</code>.
 To include a curly brace <code>{</code> in your interpolated string, you must escape it using <code>\{</code>.
@@ -1309,7 +1278,7 @@ You can nest interpolated strings inside interpolated strings.</p>
 
 #eval IO.println s!&quot;variables: {vals.map (fun i =&gt; s!&quot;x_{i}&quot;)}&quot;
 </code></pre>
-<h1><a class="header" href="#tostring-instances" id="tostring-instances"><code>ToString</code> instances</a></h1>
+<h1 id="tostring-instances"><a class="header" href="#tostring-instances"><code>ToString</code> instances</a></h1>
 <p>You can define a <code>ToString</code> instance for your own datatypes.</p>
 <pre><code class="language-lean">structure Person where
   name : String
@@ -1326,7 +1295,7 @@ def person1 : Person := {
 
 #eval println! &quot;person1: {person1}&quot;
 </code></pre>
-<h1><a class="header" href="#macro-overview" id="macro-overview">Macro Overview</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="macro-overview"><a class="header" href="#macro-overview">Macro Overview</a></h1>
 <p>The offical paper describing the mechanics behind Lean 4's macro system can be
 found in <a href="https://arxiv.org/abs/2001.10490">Beyond Notations: Hygienic Macro Expansion for Theorem Proving
 Languages</a> by Sebastian Ullrich and Leonardo
@@ -1334,7 +1303,7 @@ de Moura, and the accompanying repo with example code can be found in the
 paper's code <a href="https://github.com/Kha/macro-supplement">supplement</a>. The
 supplement also includes a working implementation of the macro expander, so it's
 a good case study for people interested in the details.</p>
-<h2><a class="header" href="#what-is-a-macro-in-lean" id="what-is-a-macro-in-lean">What is a macro in Lean?</a></h2>
+<h2 id="what-is-a-macro-in-lean"><a class="header" href="#what-is-a-macro-in-lean">What is a macro in Lean?</a></h2>
 <p>A macro is a function that takes in a syntax tree and produces a new syntax
 tree. Macros are useful for many reasons, but two of the big ones are a)
 allowing users to extend the language with new syntactic constructs without
@@ -1351,7 +1320,7 @@ shorthand for a composition of existing methods and let it do the repetitive
 work of creating the <code>Set.insert...</code> invocation for us. In this way, we can have
 our more readable and more convenient syntax without having to extend Lean
 itself, and while retaining the simple insert/singleton API.</p>
-<h2><a class="header" href="#how-macros-are-handled" id="how-macros-are-handled">How macros are handled</a></h2>
+<h2 id="how-macros-are-handled"><a class="header" href="#how-macros-are-handled">How macros are handled</a></h2>
 <p>The general procedure is as follows:</p>
 <ol>
 <li>
@@ -1374,7 +1343,7 @@ Users may occasionally want to disable hygiene, which can be accomplished with
 the command <code>set_option hygiene false</code>. More in-depth information about hygiene
 and how it's implemented in the official paper and supplement linked at the top
 of this guide.</p>
-<h2><a class="header" href="#elements-of-a-macro-important-types" id="elements-of-a-macro-important-types">Elements of &quot;a&quot; macro (important types)</a></h2>
+<h2 id="elements-of-a-macro-important-types"><a class="header" href="#elements-of-a-macro-important-types">Elements of &quot;a&quot; macro (important types)</a></h2>
 <p>In the big picture, a macro has two components that must be implemented by the
 user, parsers and syntax transformers, where the latter is a function that says
 what the input syntax should expand to. There is a third component, syntax
@@ -1448,7 +1417,7 @@ need a new syntax category) components users need to be concerned with are:</p>
 </ol>
 <p>Parsers and syntax transformers can be declared manually, but use of the pattern
 language and <code>syntax</code>, <code>macro_rules</code>, and <code>macro</code> is recommended.</p>
-<h2><a class="header" href="#syntax-categories-with-declare_syntax_cat" id="syntax-categories-with-declare_syntax_cat">syntax categories with declare_syntax_cat</a></h2>
+<h2 id="syntax-categories-with-declare_syntax_cat"><a class="header" href="#syntax-categories-with-declare_syntax_cat">syntax categories with declare_syntax_cat</a></h2>
 <p><code>declare_syntax_cat</code> declares a new syntax category, like <code>command</code>, <code>tactic</code>,
 or mathlib4's <code>binderterm</code>. These are the different categories of things that
 can be referred to in a quote/antiquote. <code>declare_syntax_cat</code> results in a call
@@ -1472,7 +1441,7 @@ syntax quotations to say what category a given quotation is expected to be an
 element of. The pipe prefixes are <em>not</em> used for elements in the <code>term</code> and
 <code>command</code> categories (since they're considered the default), but need to be used
 for everything else.</p>
-<h2><a class="header" href="#parsers-and-the-syntax-keyword" id="parsers-and-the-syntax-keyword">Parsers and the <code>syntax</code> keyword</a></h2>
+<h2 id="parsers-and-the-syntax-keyword"><a class="header" href="#parsers-and-the-syntax-keyword">Parsers and the <code>syntax</code> keyword</a></h2>
 <p>Internally, elements of type <code>Lean.ParserDescr</code> are implemented as parser
 combinators. However, Lean offers the ability to write parsers using the
 macro/pattern language by way of the <code>syntax</code> keyword. This is the recommended
@@ -1512,7 +1481,7 @@ Lean.ParserDescr.node `introv 1022
     (Lean.ParserDescr.unary `many
       (Lean.ParserDescr.binary `andthen (Lean.ParserDescr.const `colGt) (Lean.ParserDescr.const `ident))))
 </code></pre>
-<h2><a class="header" href="#the-pattern-language" id="the-pattern-language">The pattern language</a></h2>
+<h2 id="the-pattern-language"><a class="header" href="#the-pattern-language">The pattern language</a></h2>
 <p>Available quantifiers are <code>?</code> (one or zero occurrences, see note below), <code>*</code>
 (zero or more occurrences), and <code>+</code> (one or more occurrences).</p>
 <p>Keep in mind that Lean makes <code>?</code> available for use in identifiers, so if we want
@@ -1535,7 +1504,7 @@ but the generated formatter <a href="https://github.com/leanprover/lean4/blob/8d
 specified</a>,
 that is, turning the atom &quot;rwa&quot; in the syntax into the string rwa as part of the
 pretty printed output.</p>
-<h2><a class="header" href="#syntax-expansions-with-macro_rules-and-how-it-desugars" id="syntax-expansions-with-macro_rules-and-how-it-desugars">Syntax expansions with <code>macro_rules</code>, and how it desugars.</a></h2>
+<h2 id="syntax-expansions-with-macro_rules-and-how-it-desugars"><a class="header" href="#syntax-expansions-with-macro_rules-and-how-it-desugars">Syntax expansions with <code>macro_rules</code>, and how it desugars.</a></h2>
 <p><code>macro_rules</code> lets you declare expansions for a given <code>Syntax</code> element using a
 syntax simlar to a <code>match</code> statement. The left-hand side of a match arm is a
 quotation (with a leading <code>&lt;cat&gt;|</code> for categories other than <code>term</code> and
@@ -1630,24 +1599,24 @@ example (p : Prop) (h : p) (f : p -&gt; False) : 3 = 2 := by
   myExfalso
   exact f h
 </code></pre>
-<h2><a class="header" href="#the-macro-keyword" id="the-macro-keyword">The <code>macro</code> keyword</a></h2>
+<h2 id="the-macro-keyword"><a class="header" href="#the-macro-keyword">The <code>macro</code> keyword</a></h2>
 <p><code>macro</code> is a shortcut which allows users to declare both a parser and an
 expansion at the same time as a matter of convenience. Additional expansions for
 the parser generated by the <code>macro</code> invocation can be added with a separate
 <code>macro_rules</code> block (see the example in the <code>macro_rules</code> section).</p>
-<h2><a class="header" href="#unexpanders" id="unexpanders">Unexpanders</a></h2>
+<h2 id="unexpanders"><a class="header" href="#unexpanders">Unexpanders</a></h2>
 <p>TODO; for now, see the unexpander in Mathlib.Set for an example.</p>
-<h2><a class="header" href="#more-illustrative-examples" id="more-illustrative-examples">More illustrative examples:</a></h2>
+<h2 id="more-illustrative-examples"><a class="header" href="#more-illustrative-examples">More illustrative examples:</a></h2>
 <p>The
 <a href="https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/Tactic/Basic.lean">Tactic.Basic</a>
 file in Mathlib4 contains many good examples to learn from.</p>
-<h2><a class="header" href="#practical-tips" id="practical-tips">Practical tips:</a></h2>
+<h2 id="practical-tips"><a class="header" href="#practical-tips">Practical tips:</a></h2>
 <p>You can observe the output of commands and functions that in some way use the
 macro system by setting this option to true : <code>set_option trace.Elab.definition true</code></p>
 <p>Lean also offers the option of limiting the region in which option is set with
 the syntax <code>set_option ... in</code>):</p>
 <p>Hygiene can be disabled with the command option <code>set_option hygiene false</code></p>
-<h1><a class="header" href="#balanced-parentheses-as-an-embedded-domain-specific-language" id="balanced-parentheses-as-an-embedded-domain-specific-language">Balanced Parentheses as an Embedded Domain Specific Language</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="balanced-parentheses-as-an-embedded-domain-specific-language"><a class="header" href="#balanced-parentheses-as-an-embedded-domain-specific-language">Balanced Parentheses as an Embedded Domain Specific Language</a></h1>
 <p>Let's look at how to use macros to extend the Lean 4 parser and embed a language for building <em>balanced parentheses</em>.
 This language accepts strings given by the <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF grammar</a></p>
 <pre><code>Dyck :=
@@ -1745,7 +1714,7 @@ def foo : Dyck := fromBrack% {(End)}
 Dyck.Flower (Dyck.Round Dyck.End)
 -/
 </code></pre>
-<h1><a class="header" href="#declaring-new-types" id="declaring-new-types">Declaring New Types</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="declaring-new-types"><a class="header" href="#declaring-new-types">Declaring New Types</a></h1>
 <p>In Lean's library, every concrete type other than the universes and every type constructor other than the dependent function type is
 an instance of a general family of type constructions known as <em>inductive types</em>. It is remarkable that it is possible to develop
 complex programs and formalize mathematics based on nothing more than the type universes, dependent function types,
@@ -1767,7 +1736,7 @@ and previously defined types, in which <code>NewType</code> appears, if at all, 
 to mutually defined inductive types, and so-called <em>inductive families</em>.</p>
 <p>Every inductive type comes with constructors, which show how to construct an element of the type, and elimination rules,
 which show how to &quot;use&quot; an element of the type in another construction.</p>
-<h1><a class="header" href="#enumerated-types" id="enumerated-types">Enumerated Types</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="enumerated-types"><a class="header" href="#enumerated-types">Enumerated Types</a></h1>
 <p>The simplest kind of inductive type is simply a type with a finite, enumerated list of elements.
 The following command declares the enumerated type <code>Weekday</code>.</p>
 <pre><code class="language-lean">inductive Weekday where
@@ -1945,9 +1914,9 @@ sides of the equality reduce to the same term.</p>
   | saturday  =&gt; rfl
 <span class="boring">end Weekday
 </span></code></pre>
-<h1><a class="header" href="#inductive-types" id="inductive-types">Inductive Types</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="inductive-types"><a class="header" href="#inductive-types">Inductive Types</a></h1>
 <p><a href="https://leanprover.github.io/theorem_proving_in_lean4/inductive_types.html">Theorem Proving in Lean</a> has a chapter about inductive datatypes.</p>
-<h1><a class="header" href="#structures" id="structures">Structures</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="structures"><a class="header" href="#structures">Structures</a></h1>
 <p>Structure is a special case of inductive datatype. It has only one constructor and is not recursive.
 Similar to the <code>inductive</code> command, the <code>structure</code> command introduces a namespace with the same name.
 The general form is as follows:</p>
@@ -2055,7 +2024,7 @@ def p : Point Nat :=
 #eval (p.smul 3).x -- 3
 #eval (p.smul 3).y -- 6
 </code></pre>
-<h2><a class="header" href="#inheritance" id="inheritance">Inheritance</a></h2>
+<h2 id="inheritance"><a class="header" href="#inheritance">Inheritance</a></h2>
 <p>We can <em>extend</em> existing structures by adding new fields. This feature allows us to simulate a form of <em>inheritance</em>.</p>
 <pre><code class="language-lean">structure Point (α : Type u) where
   x : α
@@ -2098,7 +2067,7 @@ theorem ex :
     { x := x, y := y, w := w, z := z, bit := b } :=
   rfl
 </code></pre>
-<h2><a class="header" href="#default-field-values" id="default-field-values">Default field values</a></h2>
+<h2 id="default-field-values"><a class="header" href="#default-field-values">Default field values</a></h2>
 <p>You can assign default value to fields when declaring a new structure.</p>
 <pre><code class="language-lean">inductive MessageSeverity
   | error | warning
@@ -2139,14 +2108,14 @@ def msg2 : MessageExt where
 #eval msg2.timestamp -- 10
 #eval msg2.caption   -- &quot;extended&quot;
 </code></pre>
-<h2><a class="header" href="#updating-structure-fields" id="updating-structure-fields">Updating structure fields</a></h2>
+<h2 id="updating-structure-fields"><a class="header" href="#updating-structure-fields">Updating structure fields</a></h2>
 <p>Structure fields can be updated using <code>{ &lt;struct-val&gt; with &lt;field&gt; := &lt;new-value&gt;, ... }</code>:</p>
 <pre><code class="language-lean"><span class="boring">structure Point (α : Type u) where
 </span><span class="boring"> x : α
 </span><span class="boring"> y : α
 </span>def incrementX (p : Point Nat) : Point Nat := { p with x := p.x + 1 }
 </code></pre>
-<h1><a class="header" href="#type-classes" id="type-classes">Type classes</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="type-classes"><a class="header" href="#type-classes">Type classes</a></h1>
 <p>Typeclasses were introduced as a principled way of enabling
 ad-hoc polymorphism in functional programming languages. We first observe that it
 would be easy to implement an ad-hoc polymorphic function (such as addition) if the
@@ -2291,7 +2260,7 @@ instance : Inhabited Prop where
 -- true
 <span class="boring">end Ex
 </span></code></pre>
-<h2><a class="header" href="#chaining-instances" id="chaining-instances">Chaining Instances</a></h2>
+<h2 id="chaining-instances"><a class="header" href="#chaining-instances">Chaining Instances</a></h2>
 <p>If that were the extent of type class inference, it would not be all that impressive;
 it would be simply a mechanism of storing a list of instances for the elaborator to find in a lookup table.
 What makes type class inference powerful is that one can <em>chain</em> instances. That is,
@@ -2336,7 +2305,7 @@ theorem ex : foo.default = (default, default) :=
 <p>You can use the command <code>#print</code> to inspect how simple <code>inferInstance</code> is.</p>
 <pre><code class="language-lean">#print inferInstance
 </code></pre>
-<h2><a class="header" href="#tostring" id="tostring">ToString</a></h2>
+<h2 id="tostring"><a class="header" href="#tostring">ToString</a></h2>
 <p>The polymorphic method <code>toString</code> has type <code>{α : Type u} → [ToString α] → α → String</code>. You implement the instance
 for your own types and use chaining to convert complex values into strings. Lean comes with <code>ToString</code> instances
 for most builtin types.</p>
@@ -2350,7 +2319,7 @@ instance : ToString Person where
 #eval toString { name := &quot;Leo&quot;, age := 542 : Person }
 #eval toString ({ name := &quot;Daniel&quot;, age := 18 : Person }, &quot;hello&quot;)
 </code></pre>
-<h2><a class="header" href="#numerals" id="numerals">Numerals</a></h2>
+<h2 id="numerals"><a class="header" href="#numerals">Numerals</a></h2>
 <p>Numerals are polymorphic in Lean. You can use a numeral (e.g., <code>2</code>) to denote an element of any type that implements
 the type class <code>OfNat</code>.</p>
 <pre><code class="language-lean">structure Rational where
@@ -2389,7 +2358,7 @@ instance [s : Monoid α] : OfNat α (nat_lit 1) where
 def getUnit [Monoid α] : α :=
   1
 </code></pre>
-<h2><a class="header" href="#output-parameters" id="output-parameters">Output parameters</a></h2>
+<h2 id="output-parameters"><a class="header" href="#output-parameters">Output parameters</a></h2>
 <p>By default, Lean only tries to synthesize an instance <code>Inhabited T</code> when the term <code>T</code> is known and does not
 contain missing parts. The following command produces the error
 &quot;failed to create type class instance for <code>Inhabited (Nat × ?m.1499)</code>&quot; because the type has a missing part (i.e., the <code>_</code>).</p>
@@ -2447,7 +2416,7 @@ instance [HMul α β γ] : HMul α (Array β) (Array γ) where
 <p>You can use our new scalar array multiplication instance on arrays of type <code>Array β</code>
 with a scalar of type <code>α</code> whenever you have an instance <code>HMul α β γ</code>.
 In the last <code>#eval</code>, note that the instance was used twice on an array of arrays.</p>
-<h2><a class="header" href="#default-instances" id="default-instances">Default instances</a></h2>
+<h2 id="default-instances"><a class="header" href="#default-instances">Default instances</a></h2>
 <p>In the class <code>HMul</code>, the parameters <code>α</code> and <code>β</code> are treated as input values.
 Thus, type class synthesis only starts after these two types are known. This may often
 be too restrictive.</p>
@@ -2533,14 +2502,14 @@ infixl:70 &quot; * &quot;  =&gt; HMul.hMul
 <span class="boring">end Ex
 </span></code></pre>
 <p>The <code>Mul</code> class is convenient for types that only implement the homogeneous multiplication.</p>
-<h2><a class="header" href="#scoped-instances" id="scoped-instances">Scoped Instances</a></h2>
+<h2 id="scoped-instances"><a class="header" href="#scoped-instances">Scoped Instances</a></h2>
 <p>TODO</p>
-<h2><a class="header" href="#local-instances" id="local-instances">Local Instances</a></h2>
+<h2 id="local-instances"><a class="header" href="#local-instances">Local Instances</a></h2>
 <p>TODO</p>
-<h1><a class="header" href="#unification-hints" id="unification-hints">Unification Hints</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="unification-hints"><a class="header" href="#unification-hints">Unification Hints</a></h1>
 <p>TODO</p>
-<h1><a class="header" href="#builtin-types" id="builtin-types">Builtin Types</a></h1>
-<h2><a class="header" href="#numeric-operations" id="numeric-operations">Numeric Operations</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="builtin-types"><a class="header" href="#builtin-types">Builtin Types</a></h1>
+<h2 id="numeric-operations"><a class="header" href="#numeric-operations">Numeric Operations</a></h2>
 <p>Lean supports the basic mathematical operations you’d expect for all of the number types: addition, subtraction, multiplication, division, and remainder.
 The following code shows how you’d use each one in a <code>def</code> commands:</p>
 <pre><code class="language-lean">-- addition
@@ -2559,7 +2528,7 @@ def quotient := 53.7 / 32.2
 def modulo := 43 % 5
 </code></pre>
 <p>Each expression in these statements uses a mathematical operator and evaluates to a single value.</p>
-<h1><a class="header" href="#natural-numbers" id="natural-numbers">Natural numbers</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="natural-numbers"><a class="header" href="#natural-numbers">Natural numbers</a></h1>
 <p>The <code>Nat</code> type represents the natural numbers, i.e., arbitrary-precision unsigned integers.
 There are no overflows.</p>
 <pre><code class="language-lean">#eval 100000000000000000 * 200000000000000000000 * 1000000000000000000000
@@ -2614,7 +2583,7 @@ can be easily adapted to Lean 4.
 If you are still concerned after checking your development with multiple different external checkers because
 they may all rely on buggy arbitrary-precision libraries,
 you can develop your own certified arbitrary-precision library and use it to implement your own type checker for Lean.</p>
-<h1><a class="header" href="#integers" id="integers">Integers</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="integers"><a class="header" href="#integers">Integers</a></h1>
 <p>The <code>Int</code> type represents the arbitrary-precision integers. There are no overflows.</p>
 <pre><code class="language-lean">#eval (100000000000000000 : Int) * 200000000000000000000 * 1000000000000000000000
 </code></pre>
@@ -2641,9 +2610,9 @@ However, since <code>Int</code> is defined as</p>
 <pre><code class="language-lean">theorem ex : -2000000000 * 1000000000 = -2000000000000000000 :=
  rfl
 </code></pre>
-<h1><a class="header" href="#fixed-precision-unsigned-integers" id="fixed-precision-unsigned-integers">Fixed precision unsigned integers</a></h1>
-<h1><a class="header" href="#float" id="float">Float</a></h1>
-<h1><a class="header" href="#arrays" id="arrays">Arrays</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="fixed-precision-unsigned-integers"><a class="header" href="#fixed-precision-unsigned-integers">Fixed precision unsigned integers</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="float"><a class="header" href="#float">Float</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="arrays"><a class="header" href="#arrays">Arrays</a></h1>
 <p>The <code>Array</code> type implements a <em>dynamic</em> (aka growable) array.
 It is defined as</p>
 <pre><code class="language-lean"><span class="boring">namespace hidden
@@ -2670,7 +2639,7 @@ The Lean type checker has no special support for reducing <code>Array</code>s.</
 <pre><code class="language-lean">#eval mkArray 5 'a'
 -- #['a', 'a', 'a', 'a', 'a']
 </code></pre>
-<h2><a class="header" href="#accessing-elements" id="accessing-elements">Accessing elements</a></h2>
+<h2 id="accessing-elements"><a class="header" href="#accessing-elements">Accessing elements</a></h2>
 <p>You can access array elements by using brackets (<code>[</code> and <code>]</code>).</p>
 <pre><code class="language-lean">#eval #['a', 'b', 'c'][1]
 -- 'b'
@@ -2692,11 +2661,11 @@ def as : Array Nat :=
 
 #eval as[2] -- This is an array access
 </code></pre>
-<h1><a class="header" href="#list" id="list">List</a></h1>
-<h1><a class="header" href="#characters" id="characters">Characters</a></h1>
-<h1><a class="header" href="#strings" id="strings">Strings</a></h1>
-<h1><a class="header" href="#option" id="option">Option</a></h1>
-<h1><a class="header" href="#thunks-tasks-and-threads" id="thunks-tasks-and-threads">Thunks, Tasks, and Threads</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="list"><a class="header" href="#list">List</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="characters"><a class="header" href="#characters">Characters</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="strings"><a class="header" href="#strings">Strings</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="option"><a class="header" href="#option">Option</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="thunks-tasks-and-threads"><a class="header" href="#thunks-tasks-and-threads">Thunks, Tasks, and Threads</a></h1>
 <p>A <code>Thunk</code> is defined as</p>
 <pre><code class="language-lean"><span class="boring">namespace Ex
 </span><span class="boring">universe u
@@ -2794,8 +2763,8 @@ and <code>add1</code> is still considered to be a pure function.
 The Lean compiler performs common subexpression elimination when compiling <code>double</code>,
 and the produced code for <code>double</code> executes <code>x ()</code> only once instead of twice.
 This transformation is safe because <code>x : Unit -&gt; Nat</code> is pure.</p>
-<h1><a class="header" href="#task" id="task">Task</a></h1>
-<h1><a class="header" href="#functions" id="functions">Functions</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="task"><a class="header" href="#task">Task</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="functions"><a class="header" href="#functions">Functions</a></h1>
 <p>Functions are the fundamental unit of program execution in any programming language.
 As in other languages, a Lean function has a name, can have parameters and take arguments, and has a body.
 Lean also supports functional programming constructs such as treating functions as values,
@@ -2836,7 +2805,7 @@ establish that a function always terminates.</p>
 </code></pre>
 <p>In the previous example, <code>g x p</code> only terminates if there is a <code>y &gt;= x</code> such that <code>p y</code> returns <code>true</code>.
 Of course, <code>g 0 (fun x =&gt; false)</code> never terminates.</p>
-<h1><a class="header" href="#lambda-expressions" id="lambda-expressions">Lambda expressions</a></h1>
+<h1 id="lambda-expressions"><a class="header" href="#lambda-expressions">Lambda expressions</a></h1>
 <p>A lambda expression is an unnamed function.
 You define lambda expressions by using the <code>fun</code> keyword. A lambda expression resembles a function definition, except that instead of the <code>:=</code> token,
 the <code>=&gt;</code> token is used to separate the argument list from the function body. As in a regular function definition,
@@ -2854,7 +2823,7 @@ last expression in the body.</p>
 #eval List.map (fun (x, y) =&gt; x + y) [(1, 2), (3, 4)]
 -- [3, 7]
 </code></pre>
-<h1><a class="header" href="#syntax-sugar-for-simple-lambda-expressions" id="syntax-sugar-for-simple-lambda-expressions">Syntax sugar for simple lambda expressions</a></h1>
+<h1 id="syntax-sugar-for-simple-lambda-expressions"><a class="header" href="#syntax-sugar-for-simple-lambda-expressions">Syntax sugar for simple lambda expressions</a></h1>
 <p>Simple functions can be defined using parentheses and <code>·</code> as a placeholder.</p>
 <pre><code class="language-lean">#check (· + 1)
 -- fun a =&gt; a + 1
@@ -2873,7 +2842,7 @@ def h (x y z : Nat) :=
 -- [1, 3, 5]
 </code></pre>
 <p>In the previous example, the term <code>(·.1)</code> is syntax sugar for <code>fun x =&gt; x.1</code>.</p>
-<h1><a class="header" href="#pipelining" id="pipelining">Pipelining</a></h1>
+<h1 id="pipelining"><a class="header" href="#pipelining">Pipelining</a></h1>
 <p>Pipelining enables function calls to be chained together as successive operations. Pipelining works as follows:</p>
 <pre><code class="language-lean">def add1 x := x + 1
 def times2 x := x * 2
@@ -2909,19 +2878,19 @@ def add1Times3FilterEven'' (xs : List Nat) :=
 </code></pre>
 <p>For users familiar with the Haskell programming language,
 Lean also supports the notation <code>f $ a</code> for the backward pipeline <code>f &lt;| a</code>.</p>
-<h1><a class="header" href="#frequently-asked-questions" id="frequently-asked-questions">Frequently Asked Questions</a></h1>
-<h3><a class="header" href="#what-is-lean-1" id="what-is-lean-1">What is Lean?</a></h3>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="frequently-asked-questions"><a class="header" href="#frequently-asked-questions">Frequently Asked Questions</a></h1>
+<h3 id="what-is-lean-1"><a class="header" href="#what-is-lean-1">What is Lean?</a></h3>
 <p>Lean is a new open source theorem prover being developed at Microsoft Research.
 It is a research project that aims to bridge the gap between interactive and automated theorem proving.
 Lean can be also used as a programming language. Actually, some Lean features are implemented in Lean itself.</p>
-<h3><a class="header" href="#are-pull-requests-welcome" id="are-pull-requests-welcome">Are pull requests welcome?</a></h3>
+<h3 id="are-pull-requests-welcome"><a class="header" href="#are-pull-requests-welcome">Are pull requests welcome?</a></h3>
 <p>In the past, we accepted most pull requests. This practice produced hard to maintain code, performance problems, and bugs.
 It takes time to review a pull request and make sure it is correct, useful and is not in conflict with our plans.
 Small bug fixes (few lines of code) are always welcome. Any other kind of unrequested pull request is not.
 Thus, before implementing a feature or modifying the system, please ask whether the change is welcome or not.
 We have issues tagged with <a href="https://github.com/leanprover/lean4/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22">&quot;help wanted&quot;</a>, if you want to contribute to the project, please take a look at them.
 If you are interested in one of them, post comments, ask questions, and engage with the core developers there.</p>
-<h3><a class="header" href="#should-i-use-lean" id="should-i-use-lean">Should I use Lean?</a></h3>
+<h3 id="should-i-use-lean"><a class="header" href="#should-i-use-lean">Should I use Lean?</a></h3>
 <p>Lean is under heavy development, and we are constantly trying new
 ideas and tweaking the system.  It is a research project and not a product.
 Things change rapidly, and we constantly break backward compatibility.
@@ -2930,36 +2899,36 @@ We have our own priorities, and will not change them to accommodate your needs.
 Even if you implement a new feature or fix a bug, we may not want to merge it because
 it may conflict with our plans for Lean, it may not be performant, we may not want to maintain it,
 we may be busy, etc. If you really need this new feature or bug fix, we suggest you create your own fork and maintain it yourself.</p>
-<h3><a class="header" href="#where-is-the-documentation" id="where-is-the-documentation">Where is the documentation?</a></h3>
+<h3 id="where-is-the-documentation"><a class="header" href="#where-is-the-documentation">Where is the documentation?</a></h3>
 <p>This is the Lean 4 manual. It is a work in progress, but it will eventually cover the whole language.
 A public and very active chat room dedicated to Lean is open on <a href="https://leanprover.zulipchat.com">Zulip</a>.
 It is a good place to interact with other Lean users.</p>
-<h3><a class="header" href="#should-i-use-lean-to-teach-a-course" id="should-i-use-lean-to-teach-a-course">Should I use Lean to teach a course?</a></h3>
+<h3 id="should-i-use-lean-to-teach-a-course"><a class="header" href="#should-i-use-lean-to-teach-a-course">Should I use Lean to teach a course?</a></h3>
 <p>Lean has been used to teach courses on logic, type theory and programming languages at CMU and the University of Washington.
 The lecture notes for the CMU course <a href="https://leanprover.github.io/logic_and_proof">Logic and Proof</a> are available online,
 but they are for Lean 3.
 If you decide to teach a course using Lean, we suggest you prepare all material before the beginning of the course, and
 make sure that Lean attends all your needs. You should not expect we will fix bugs and/or add features needed for your course.</p>
-<h3><a class="header" href="#are-there-ides-for-lean" id="are-there-ides-for-lean">Are there IDEs for Lean?</a></h3>
+<h3 id="are-there-ides-for-lean"><a class="header" href="#are-there-ides-for-lean">Are there IDEs for Lean?</a></h3>
 <p>Yes, see <a href="./setup.html">Setting Up Lean</a>.</p>
-<h3><a class="header" href="#is-lean-sound-how-big-is-the-kernel-should-i-trust-it" id="is-lean-sound-how-big-is-the-kernel-should-i-trust-it">Is Lean sound? How big is the kernel? Should I trust it?</a></h3>
+<h3 id="is-lean-sound-how-big-is-the-kernel-should-i-trust-it"><a class="header" href="#is-lean-sound-how-big-is-the-kernel-should-i-trust-it">Is Lean sound? How big is the kernel? Should I trust it?</a></h3>
 <p>Lean has a relatively small kernel.
 Several independent checkers have been implemented for Lean 3. Two of them are
 <a href="https://github.com/leanprover/tc">tc</a> and <a href="https://github.com/gebner/trepplein">trepplein</a>.
 We expect similar independent checkers will be built for Lean 4.</p>
-<h3><a class="header" href="#should-i-open-a-new-issue" id="should-i-open-a-new-issue">Should I open a new issue?</a></h3>
+<h3 id="should-i-open-a-new-issue"><a class="header" href="#should-i-open-a-new-issue">Should I open a new issue?</a></h3>
 <p>We use <a href="https://github.com/leanprover/lean4/issues">GitHub</a> to track bugs and new features.
 Bug reports are always welcome, but nitpicking issues are not (e.g., the error message is confusing).
 See also our <a href="../CONTRIBUTING.html">contribution guidelines</a>.</p>
-<h3><a class="header" href="#is-it-lean-lean-or-ln" id="is-it-lean-lean-or-ln">Is it Lean, LEAN, or L∃∀N?</a></h3>
+<h3 id="is-it-lean-lean-or-ln"><a class="header" href="#is-it-lean-lean-or-ln">Is it Lean, LEAN, or L∃∀N?</a></h3>
 <p>We always use &quot;Lean&quot; in writing.
 When specifying a major version number, we append it together with a single space: Lean 4.</p>
-<h1><a class="header" href="#significant-changes-from-lean-3" id="significant-changes-from-lean-3">Significant changes from Lean 3</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="significant-changes-from-lean-3"><a class="header" href="#significant-changes-from-lean-3">Significant changes from Lean 3</a></h1>
 <p>Lean 4 is not backward compatible with Lean 3.
 We have rewritten most of the system, and took the opportunity to cleanup the syntax,
 metaprogramming framework, and elaborator. In this section, we go over the most significant
 changes.</p>
-<h2><a class="header" href="#lambda-expressions-1" id="lambda-expressions-1">Lambda expressions</a></h2>
+<h2 id="lambda-expressions-1"><a class="header" href="#lambda-expressions-1">Lambda expressions</a></h2>
 <p>We do not use <code>,</code> anymore to separate the binders from the lambda expression body.
 The Lean 3 syntax for lambda expressions was unconventional, and <code>,</code> has been overused in Lean 3.
 For example, we believe a list of lambda expressions is quite confusing in Lean 3, since <code>,</code> is used
@@ -3055,7 +3024,7 @@ The collection is interrupted by nested parentheses. In the following example, t
 <pre><code class="language-lean">#check (Prod.mk · (· + 1))
 -- fun a =&gt; (a, fun b =&gt; b + 1)
 </code></pre>
-<h2><a class="header" href="#function-applications" id="function-applications">Function applications</a></h2>
+<h2 id="function-applications"><a class="header" href="#function-applications">Function applications</a></h2>
 <p>In Lean 4, we have support for named arguments.
 Named arguments enable you to specify an argument for a parameter by matching the argument with
 its name rather than with its position in the parameter list.
@@ -3127,7 +3096,7 @@ to avoid a sequence of <code>_</code>s.</p>
 <pre><code class="language-lean">example (f : Nat → Nat) (a b c : Nat) : f (a + b + c) = f (a + (b + c)) :=
   congrArg f (Nat.add_assoc ..)
 </code></pre>
-<h2><a class="header" href="#dependent-function-types" id="dependent-function-types">Dependent function types</a></h2>
+<h2 id="dependent-function-types"><a class="header" href="#dependent-function-types">Dependent function types</a></h2>
 <p>Given <code>α : Type</code> and <code>β : α → Type</code>, <code>(x : α) → β x</code> denotes the type of functions <code>f</code> with the property that,
 for each <code>a : α</code>, <code>f a</code> is an element of <code>β a</code>. In other words, the type of the value returned by <code>f</code> depends on its input.
 We say <code>(x : α) → β x</code> is a dependent function type. In Lean 3, we write the dependent function type <code>(x : α) → β x</code> using
@@ -3146,7 +3115,7 @@ it is awkward to use and often confuses new users. We can still write <code>fora
 #check forall {α : Type} (a : Array α) (i : Nat), i &lt; a.size → α
 #check {α β : Type} → α → β → α × β
 </code></pre>
-<h2><a class="header" href="#the-meta-keyword" id="the-meta-keyword">The <code>meta</code> keyword</a></h2>
+<h2 id="the-meta-keyword"><a class="header" href="#the-meta-keyword">The <code>meta</code> keyword</a></h2>
 <p>In Lean 3, the keyword <code>meta</code> is used to mark definitions that can use primitives implemented in C/C++.
 These metadefinitions can also call themselves recursively, relaxing the termination
 restriction imposed by ordinary type theory. Metadefinitions may also use unsafe primitives such as
@@ -3249,12 +3218,12 @@ the auxiliary unsafe definition generated by Lean, and produces a safe one using
 #eval f 98
 <span class="boring">end partial1
 </span></code></pre>
-<p>You can copy highlighted code <a href="https://code.visualstudio.com/updates/v1_10#_copy-with-syntax-highlighting">straight from VS Code</a> to any rich text editor supporting HTML input. For highlighting code in LaTeX, there are two options:</p>
+<div style="break-before: page; page-break-before: always;"></div><p>You can copy highlighted code <a href="https://code.visualstudio.com/updates/v1_10#_copy-with-syntax-highlighting">straight from VS Code</a> to any rich text editor supporting HTML input. For highlighting code in LaTeX, there are two options:</p>
 <ul>
 <li><a href="https://ctan.org/pkg/listings">listings</a>, which is a common package and simple to set up, but you may run into some restrictions of it and LaTeX around Unicode</li>
 <li><a href="https://ctan.org/pkg/minted"><code>minted</code></a>, a LaTeX package wrapping the <a href="https://pygments.org/">Pygments</a> syntax highlighting library. It needs a few more steps to set up, but provides unrestricted support for Unicode when combined with XeLaTeX or LuaLaTex.</li>
 </ul>
-<h2><a class="header" href="#example-with-listings" id="example-with-listings">Example with <code>listings</code></a></h2>
+<h2 id="example-with-listings"><a class="header" href="#example-with-listings">Example with <code>listings</code></a></h2>
 <p>Save <a href="https://raw.githubusercontent.com/leanprover/lean4/master/doc/latex/lstlean.tex"><code>lstlean.tex</code></a> into the same directory, or anywhere in your <code>TEXINPUTS</code> path, as the following test file:</p>
 <pre><code class="language-latex">\documentclass{article}
 \usepackage[T1]{fontenc}
@@ -3289,7 +3258,7 @@ theorem funext {f₁ f₂ : ∀ (x : α), β x} (h : ∀ x, f₁ x = f₂ x) : f
 <ul>
 <li>for older LaTeX versions, you might need to use <code>[utf8x]</code> instead of <code>[utf8]</code> with <code>inputenc</code></li>
 </ul>
-<h2><a class="header" href="#example-with-minted" id="example-with-minted">Example with <code>minted</code></a></h2>
+<h2 id="example-with-minted"><a class="header" href="#example-with-minted">Example with <code>minted</code></a></h2>
 <p>First <a href="https://pygments.org/download/">install Pygments</a>. Then save <a href="https://raw.githubusercontent.com/leanprover/lean4/master/doc/latex/lean4.py"><code>lean4.py</code></a>, which contains an version of the Lean highlighter updated for Lean 4, and the following sample LaTeX file <code>test.tex</code> into the same directory:</p>
 <pre><code class="language-latex">\documentclass{article}
 \usepackage{fontspec}
@@ -3333,7 +3302,7 @@ theorem funext {f₁ f₂ : ∀ (x : α), β x} (h : ∀ x, f₁ x = f₂ x) : f
 <li>minted has a &quot;helpful&quot; feature that draws red boxes around characters the chosen lexer doesn't recognize.
 Since the Lean lexer cannot encompass all user-defined syntax, it is advisable to <a href="https://tex.stackexchange.com/a/343506/14563">work around</a> this feature.</li>
 </ul>
-<h1><a class="header" href="#development-workflow" id="development-workflow">Development Workflow</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="development-workflow"><a class="header" href="#development-workflow">Development Workflow</a></h1>
 <ul>
 <li><a href="dev/./commit_convention.html">Commit Convention</a></li>
 <li><a href="dev/../make/index.html">Building Lean</a>
@@ -3358,12 +3327,12 @@ pipeline</a> so you understand how this works.</p>
 <p>The dev team uses <code>elan</code> to manage which <code>lean</code> toolchain to use
 locally and <code>elan</code> can be used to setup the version of Lean you are
 manually building.  This means you generally do not use <code>make install</code>. You use <code>elan</code> instead.</p>
-<h2><a class="header" href="#development-setup" id="development-setup">Development Setup</a></h2>
+<h2 id="development-setup"><a class="header" href="#development-setup">Development Setup</a></h2>
 <p>You can use any of the <a href="dev/../setup.html">supported editors</a> for editing
 the Lean source code. If you set up <code>elan</code> as below, opening <code>src/</code> as
 a <em>workspace folder</em> should ensure that stage 0 will be used for file
 in that directory.</p>
-<h2><a class="header" href="#dev-setup-using-elan" id="dev-setup-using-elan">Dev setup using elan</a></h2>
+<h2 id="dev-setup-using-elan"><a class="header" href="#dev-setup-using-elan">Dev setup using elan</a></h2>
 <p>You can use <a href="https://github.com/leanprover/elan"><code>elan</code></a> to easily
 switch between stages and build configurations based on the current
 directory, both for the <code>lean</code>, <code>leanc</code>, and <code>leanmake</code> binaries in your shell's
@@ -3401,11 +3370,11 @@ alternatively you can also set <code>lean4-rootdir</code> to <code>&quot;~/.elan
 things like symbol autocompletion because at first only the elan proxy binary
 is loaded. You can instead pass the explicit path to <code>bin/lean</code> in your build
 folder to gdb, or use <code>gdb $(elan which lean)</code>.</p>
-<h1><a class="header" href="#git-commit-convention" id="git-commit-convention">Git Commit Convention</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="git-commit-convention"><a class="header" href="#git-commit-convention">Git Commit Convention</a></h1>
 <p>We are using the following convention for writing git-commit messages.
 It is based on the one from AngularJS project(<a href="https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#">doc</a>,
 <a href="https://github.com/angular/angular.js/commits/master">commits</a>).</p>
-<h2><a class="header" href="#format-of-the-commit-message" id="format-of-the-commit-message">Format of the commit message</a></h2>
+<h2 id="format-of-the-commit-message"><a class="header" href="#format-of-the-commit-message">Format of the commit message</a></h2>
 <pre><code>&lt;type&gt;: &lt;subject&gt;
 &lt;NEWLINE&gt;
 &lt;body&gt;
@@ -3448,7 +3417,7 @@ in the footer prefixed with &quot;Closes&quot; keyword like this:</p>
 <p>Closes #123, #456</p>
 </li>
 </ul>
-<h2><a class="header" href="#examples-1" id="examples-1">Examples</a></h2>
+<h2 id="examples-1"><a class="header" href="#examples-1">Examples</a></h2>
 <p>fix: add declarations for operator&lt;&lt;(std::ostream&amp;, expr const&amp;) and operator&lt;&lt;(std::ostream&amp;, context const&amp;) in the kernel</p>
 <p>The actual implementation of these two operators is outside of the
 kernel. They are implemented in the file 'library/printer.cpp'. We
@@ -3463,13 +3432,13 @@ std::cout &lt;&lt; a &lt;&lt; &quot;\n&quot;;
 <p>The compiler does not generate an error message. It silently uses the
 operator bool() to coerce the expression into a Boolean. This produces
 counter-intuitive behavior, and may confuse developers.</p>
-<h2><a class="header" href="#requirements" id="requirements">Requirements</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="requirements"><a class="header" href="#requirements">Requirements</a></h2>
 <ul>
 <li>C++14 compatible compiler</li>
 <li><a href="http://www.cmake.org">CMake</a></li>
 <li><a href="http://gmplib.org/">GMP (GNU multiprecision library)</a></li>
 </ul>
-<h2><a class="header" href="#platform-specific-setup" id="platform-specific-setup">Platform-Specific Setup</a></h2>
+<h2 id="platform-specific-setup"><a class="header" href="#platform-specific-setup">Platform-Specific Setup</a></h2>
 <ul>
 <li><a href="make/ubuntu.html">Linux (Ubuntu)</a></li>
 <li><a href="make/msys2.html">Windows (msys2)</a></li>
@@ -3480,7 +3449,7 @@ counter-intuitive behavior, and may confuse developers.</p>
 <li>There is also an <a href="make/nix.html"><strong>experimental</strong> setup based purely on Nix</a> that works fundamentally differently from the
 make/CMake setup described on this page.</li>
 </ul>
-<h2><a class="header" href="#generic-build-instructions" id="generic-build-instructions">Generic Build Instructions</a></h2>
+<h2 id="generic-build-instructions"><a class="header" href="#generic-build-instructions">Generic Build Instructions</a></h2>
 <p>Setting up a basic release build:</p>
 <pre><code class="language-bash">git clone https://github.com/leanprover/lean4 --recurse-submodules
 cd lean4
@@ -3502,7 +3471,7 @@ takes 00:01:38.  Your results may vary depending on the speed of your hard
 drive.</p>
 <p>To install the build, see <a href="make/../dev/index.html#dev-setup-using-elan">Dev setup using
 elan</a>.</p>
-<h2><a class="header" href="#useful-cmake-configuration-settings" id="useful-cmake-configuration-settings">Useful CMake Configuration Settings</a></h2>
+<h2 id="useful-cmake-configuration-settings"><a class="header" href="#useful-cmake-configuration-settings">Useful CMake Configuration Settings</a></h2>
 <p>Pass these along with the <code>cmake ../..</code> command.</p>
 <ul>
 <li>
@@ -3519,20 +3488,20 @@ see also <code>.github/workflows/ci.yml</code> for the CI config.</p>
 </ul>
 <p>Lean will automatically use <a href="https://ccache.dev/">CCache</a> if available to avoid
 redundant builds, especially after stage 0 has been updated.</p>
-<h2><a class="header" href="#troubleshooting-1" id="troubleshooting-1">Troubleshooting</a></h2>
+<h2 id="troubleshooting-1"><a class="header" href="#troubleshooting-1">Troubleshooting</a></h2>
 <ul>
 <li>Call <code>make</code> with an additional <code>VERBOSE=1</code> argument to print executed commands.</li>
 </ul>
-<h1><a class="header" href="#installing-lean-on-ubuntu" id="installing-lean-on-ubuntu">Installing Lean on Ubuntu</a></h1>
-<h2><a class="header" href="#build-dependencies" id="build-dependencies">Build Dependencies</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="installing-lean-on-ubuntu"><a class="header" href="#installing-lean-on-ubuntu">Installing Lean on Ubuntu</a></h1>
+<h2 id="build-dependencies"><a class="header" href="#build-dependencies">Build Dependencies</a></h2>
 <p>Please ensure you have the following build tools available and then
 follow the <a href="make/index.html">generic build instructions</a>.</p>
-<h2><a class="header" href="#basic-packages" id="basic-packages">Basic packages</a></h2>
+<h2 id="basic-packages"><a class="header" href="#basic-packages">Basic packages</a></h2>
 <pre><code class="language-bash">sudo apt-get install git libgmp-dev cmake ccache clang
 </code></pre>
-<h1><a class="header" href="#install-packages-on-os-x-109" id="install-packages-on-os-x-109">Install Packages on OS X 10.9</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="install-packages-on-os-x-109"><a class="header" href="#install-packages-on-os-x-109">Install Packages on OS X 10.9</a></h1>
 <p>We assume that you are using <a href="http://brew.sh">homebrew</a> as a package manager.</p>
-<h2><a class="header" href="#compilers" id="compilers">Compilers</a></h2>
+<h2 id="compilers"><a class="header" href="#compilers">Compilers</a></h2>
 <p>You need a C++11-compatible compiler to build Lean. As of November
 2014, you have three options:</p>
 <ul>
@@ -3554,14 +3523,14 @@ that you want to use when you run <code>cmake</code>. For example, do the
 following to use <code>g++</code>.</p>
 <pre><code class="language-bash">cmake -DCMAKE_CXX_COMPILER=g++ ...
 </code></pre>
-<h2><a class="header" href="#required-packages-cmake-gmp" id="required-packages-cmake-gmp">Required Packages: CMake, GMP</a></h2>
+<h2 id="required-packages-cmake-gmp"><a class="header" href="#required-packages-cmake-gmp">Required Packages: CMake, GMP</a></h2>
 <pre><code class="language-bash">brew install cmake
 brew install gmp
 </code></pre>
-<h2><a class="header" href="#recommended-packages-ccache" id="recommended-packages-ccache">Recommended Packages: CCache</a></h2>
+<h2 id="recommended-packages-ccache"><a class="header" href="#recommended-packages-ccache">Recommended Packages: CCache</a></h2>
 <pre><code class="language-bash">brew install ccache
 </code></pre>
-<h1><a class="header" href="#lean-for-windows" id="lean-for-windows">Lean for Windows</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="lean-for-windows"><a class="header" href="#lean-for-windows">Lean for Windows</a></h1>
 <p>A native Lean binary for Windows can be generated using <a href="http://msys2.github.io">MSYS2</a>.
 It is easy to install all dependencies, it produces native
 64/32-binaries, and supports a C++14 compiler.</p>
@@ -3571,7 +3540,7 @@ Mode</a>
 (Settings &gt; Update &amp; Security &gt; For developers &gt; Developer Mode),
 which will allow Lean to create symlinks that e.g. enable go-to-definition in
 the stdlib.</p>
-<h2><a class="header" href="#installing-dependencies" id="installing-dependencies">Installing dependencies</a></h2>
+<h2 id="installing-dependencies"><a class="header" href="#installing-dependencies">Installing dependencies</a></h2>
 <p><a href="http://msys2.github.io">The official webpage of MSYS2</a> provides one-click installers.
 Once installed, you should run the &quot;MSYS2 MinGW 64-bit shell&quot; from the start menu.
 (The one that runs <code>mingw64.exe</code>)
@@ -3590,7 +3559,7 @@ MinGW shell, using:</p>
 </code></pre>
 <p>instead of <code>cmake ../..</code>. This ensures that cmake will call <code>sh</code> instead of <code>cmd.exe</code>
 for script tasks and it will use the clang compiler instead of gcc, which is required.</p>
-<h2><a class="header" href="#install-lean" id="install-lean">Install lean</a></h2>
+<h2 id="install-lean"><a class="header" href="#install-lean">Install lean</a></h2>
 <p>Follow the steps in <a href="make/../dev/index.html#dev-setup-using-elan">Dev setup using
 elan</a> regarding installation of the
 bits you just built.  Note that in an msys2 environment <code>elan-init.sh</code>
@@ -3598,7 +3567,7 @@ reports you need to add <code>%USERPROFILE%\.elan\bin</code> to your path, but o
 course in msys2 that needs to be a valid linux style path, like this:</p>
 <pre><code class="language-bash">export PATH=&quot;$PATH:/c/users/$USERNAME/.elan/bin&quot;
 </code></pre>
-<h2><a class="header" href="#running" id="running">Running</a></h2>
+<h2 id="running"><a class="header" href="#running">Running</a></h2>
 <p>You can run <code>lean --version</code> to see if your binaries work.</p>
 <p>If you want a version that can run independently of your MSYS install
 then you need to copy the following dependent DLL's from where ever
@@ -3616,12 +3585,12 @@ they are installed in your MSYS setup:</p>
 to executable binaries using <code>lake build</code> in normal Windows command
 prompt outside of msys2 environment you will also need to add a windows
 version clang to your path.</p>
-<h2><a class="header" href="#trouble-shooting" id="trouble-shooting">Trouble shooting</a></h2>
+<h2 id="trouble-shooting"><a class="header" href="#trouble-shooting">Trouble shooting</a></h2>
 <p><strong>-bash: gcc: command not found</strong></p>
 <p>Make sure <code>/mingw64/bin</code> is in your PATH environment.  If it is not then
 check you launched the MSYS2 MinGW 64-bit shell from the start menu.
 (The one that runs <code>mingw64.exe</code>).</p>
-<h1><a class="header" href="#lean-in-windows-wsl" id="lean-in-windows-wsl">Lean in Windows WSL</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="lean-in-windows-wsl"><a class="header" href="#lean-in-windows-wsl">Lean in Windows WSL</a></h1>
 <p>As an alternative to the <a href="make/msys2.html">MSYS2</a> setup you can also use the
 <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">Windows Subsystem for Linux</a> to build Lean there, but edit and
 debug using <a href="https://code.visualstudio.com/Download">Visual Studio Code</a> in Windows.</p>
@@ -3633,7 +3602,7 @@ in WSL.</p>
 <p>It is recommended that you setup Ubuntu in <a href="https://docs.microsoft.com/en-us/windows/wsl/compare-versions">WSL
 2</a>.
 Then follow the <a href="make/../dev/index.html#dev-setup-using-elan">Dev setup using elan</a>.</p>
-<h2><a class="header" href="#visual-studio-code-setup-on-windows" id="visual-studio-code-setup-on-windows">Visual Studio Code setup on Windows</a></h2>
+<h2 id="visual-studio-code-setup-on-windows"><a class="header" href="#visual-studio-code-setup-on-windows">Visual Studio Code setup on Windows</a></h2>
 <p>Install <a href="https://code.visualstudio.com/Download">Visual Studio Code</a> on Windows.  Install the VS Code
 <code>Remote Development</code> extension from Microsoft.  This extension
 includes the <code>Remote - WSL</code> extension. Install the lean4 extension but
@@ -3643,7 +3612,7 @@ open a folder containing your hello world lean package.</p>
 <p>When everything is working you should see something like this with a
 functioning infoview, syntax coloring and tooltips:</p>
 <p><img src="make/../images/code-wsl.png" alt="screenshot" /></p>
-<h2><a class="header" href="#troubleshooting-2" id="troubleshooting-2">Troubleshooting</a></h2>
+<h2 id="troubleshooting-2"><a class="header" href="#troubleshooting-2">Troubleshooting</a></h2>
 <p><strong>lean4: Could not find Lean version by running 'lean --version'.</strong></p>
 <p>Check that the <code>lean</code> program is available in your PATH in your WSL
 environment.</p>
@@ -3655,9 +3624,9 @@ this setting is set as follows:</p>
 </code></pre>
 <p>This will result in a logs folder being created inside your lean
 package folder in the WSL file system.</p>
-<h1><a class="header" href="#building-with-nix" id="building-with-nix">Building with Nix</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="building-with-nix"><a class="header" href="#building-with-nix">Building with Nix</a></h1>
 <p>While <a href="https://nixos.org/nix/">Nix</a> can be used to quickly open a shell with all dependencies for the <a href="make/index.html">standard setup</a> installed, the user-facing <a href="make/../setup.html#nix-setup">Nix Setup</a> can also be used to work <em>on</em> Lean.</p>
-<h2><a class="header" href="#setup" id="setup">Setup</a></h2>
+<h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
 <p>Follow the setup in the link above; to open the Lean shell inside a Lean checkout, you can also use</p>
 <pre><code class="language-bash"># in the Lean root directory
 $ nix-shell -A nix
@@ -3671,7 +3640,7 @@ To enable CCache, add the following line to the config file mentioned in the set
 # macOS standard chown doesn't support --reference
 nix shell .#nixpkgs.coreutils -c sudo chown --reference=/nix/store /nix/var/cache/ccache
 </code></pre>
-<h2><a class="header" href="#basic-build-commands" id="basic-build-commands">Basic Build Commands</a></h2>
+<h2 id="basic-build-commands"><a class="header" href="#basic-build-commands">Basic Build Commands</a></h2>
 <p>From the Lean root directory inside the Lean shell:</p>
 <pre><code class="language-bash">nix build .#stage1  # build this stage's stdlib &amp; executable
 nix build .#stage1.test  # run all tests
@@ -3683,7 +3652,7 @@ nix run .#stage1.update-stage0-commit  # ...and commit the results
 nix build .  # build stage 1
 nix build  # dito
 </code></pre>
-<h2><a class="header" href="#build-process-description" id="build-process-description">Build Process Description</a></h2>
+<h2 id="build-process-description"><a class="header" href="#build-process-description">Build Process Description</a></h2>
 <p>The Nix build process conceptually works the same as described in <a href="make/index.html#lean-build-pipeline">Lean Build Pipeline</a>.
 However, there are two important differences in practice apart from the standard Nix properties (hermeneutic, reproducible builds stored in a global hash-indexed store etc.):</p>
 <ul>
@@ -3692,7 +3661,7 @@ This is actually a general property of Nix flakes, and has the benefit of making
 <li>Only files reachable from <code>src/Lean.lean</code> are compiled.
 This is because modules are discovered not from a directory listing anymore but by recursively compiling all dependencies of that top module.</li>
 </ul>
-<h2><a class="header" href="#editor-integration" id="editor-integration">Editor Integration</a></h2>
+<h2 id="editor-integration"><a class="header" href="#editor-integration">Editor Integration</a></h2>
 <p>As in the standard Nix setup.
 After adding <code>src/</code> as an LSP workspace, it should automatically fall back to using stage 0 in there.</p>
 <p>Note that the UX of <code>{emacs,vscode}-dev</code> is quite different from the Make-based setup regarding the compilation of dependencies:
@@ -3701,7 +3670,7 @@ Instead, <code>emacs-dev</code> will gather the individual dependency outputs fr
 However, it will only ever load changes saved to disk, not ones opened in other buffers.</p>
 <p>The absence of a mutable output directory also means that the Lean server will not automatically pick up <code>.ilean</code> metadata from newly compiled files.
 Instead, you can run <code>nix run .#link-ilean</code> to symlink the <code>.ilean</code> tree of the stdlib state at that point in time to <code>src/build/lib</code>, where the server should automatically find them.</p>
-<h2><a class="header" href="#other-fun-stuff-to-do-with-nix" id="other-fun-stuff-to-do-with-nix">Other Fun Stuff to Do with Nix</a></h2>
+<h2 id="other-fun-stuff-to-do-with-nix"><a class="header" href="#other-fun-stuff-to-do-with-nix">Other Fun Stuff to Do with Nix</a></h2>
 <p>Open Emacs with Lean set up from an arbitrary commit (without even cloning Lean beforehand... if your Nix is new enough):</p>
 <pre><code class="language-bash">nix run github:leanprover/lean4/7e4edeb#emacs-package
 </code></pre>
@@ -3725,7 +3694,7 @@ nix run .#HEAD-as-stage0.emacs-dev&amp;
 </code></pre>
 <p>This setup will inadvertently change your <code>flake.lock</code> file, which you can revert when you are done.</p>
 <p>...more surely to come...</p>
-<h2><a class="header" href="#debugging" id="debugging">Debugging</a></h2>
+<h2 id="debugging"><a class="header" href="#debugging">Debugging</a></h2>
 <p>Since Nix copies all source files before compilation, you will need to map debug symbols back to the original path using <code>set substitute-path</code> in GDB.
 For example, for a build on Linux with the Nix sandbox activated:</p>
 <pre><code class="language-bash">(gdb) f
@@ -3736,7 +3705,7 @@ For example, for a build on Linux with the Nix sandbox activated:</p>
 #1  0x0000000000d23a4f in lean_inc (o=0x1) at /build/source/build/include/lean/lean.h:562
 562	static inline void lean_inc(lean_object * o) { if (!lean_is_scalar(o)) lean_inc_ref(o); }
 </code></pre>
-<h1><a class="header" href="#foreign-function-interface" id="foreign-function-interface">Foreign Function Interface</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="foreign-function-interface"><a class="header" href="#foreign-function-interface">Foreign Function Interface</a></h1>
 <p>NOTE: The current interface was designed for internal use in Lean and should be considered <strong>unstable</strong>.
 It will be refined and extended in the future.</p>
 <p>As Lean is written partially in Lean itself and partially in C++, it offers efficient interoperability between the two languages (or rather, between Lean and any language supporting C interfaces).
@@ -3747,7 +3716,7 @@ This support is however currently limited to transferring Lean data types; in pa
 It can also be used with <code>def</code> to provide an internal definition, but ensuring consistency of both definitions is up to the user.</li>
 <li><code>@[export sym] def leanSym : ...</code> exports <code>leanSym</code> under the unmangled symbol name <code>sym</code>.</li>
 </ul>
-<h2><a class="header" href="#the-lean-abi" id="the-lean-abi">The Lean ABI</a></h2>
+<h2 id="the-lean-abi"><a class="header" href="#the-lean-abi">The Lean ABI</a></h2>
 <p>The Lean Application Binary Interface (ABI) describes how the signature of a Lean declaration is encoded as a native calling convention.
 It is based on the standard C ABI and calling convention of the target platform.
 For a Lean declaration marked with either <code>@[extern &quot;sym&quot;]</code> or <code>@[export sym]</code> for some symbol name <code>sym</code>, let <code>α₁ → ... → αₙ → β</code> be the normalized declaration's type.
@@ -3761,7 +3730,7 @@ In the case of an <code>@[extern]</code> definition, the symbol's value is guara
 </code></pre>
 <p>where the parameter types <code>tᵢ</code> are the C translation of the <code>αᵢ</code> as in the next section.
 In the case of <code>@[extern]</code> all <em>irrelevant</em> types are removed first; see next section.</p>
-<h3><a class="header" href="#translating-types-from-lean-to-c" id="translating-types-from-lean-to-c">Translating Types from Lean to C</a></h3>
+<h3 id="translating-types-from-lean-to-c"><a class="header" href="#translating-types-from-lean-to-c">Translating Types from Lean to C</a></h3>
 <ul>
 <li>
 <p>The integer types <code>UInt8</code>, ..., <code>UInt64</code>, <code>USize</code> are represented by the C types <code>uint8_t</code>, ..., <code>uint64_t</code>, <code>usize_t</code>, respectively</p>
@@ -3802,13 +3771,13 @@ Its runtime value is a pointer to an object of a subtype of <code>lean_object</c
 <p>Example: the runtime value of <code>u : Unit</code> is always <code>lean_box(0)</code>.</p>
 </li>
 </ul>
-<h3><a class="header" href="#borrowing" id="borrowing">Borrowing</a></h3>
+<h3 id="borrowing"><a class="header" href="#borrowing">Borrowing</a></h3>
 <p>By default, all <code>lean_object *</code> parameters of an <code>@[extern]</code> function are considered <em>owned</em>, i.e. the external code is passed a &quot;virtual RC token&quot; and is responsible for passing this token along to another consuming function (exactly once) or freeing it via <code>lean_dec</code>.
 To reduce reference counting overhead, parameters can be marked as <em>borrowed</em> by prefixing their type with <code>@&amp;</code>.
 Borrowed objects must only be passed to other non-consuming functions (arbitrarily often) or converted to owned values using <code>lean_inc</code>.
 In <code>lean.h</code>, the <code>lean_object *</code> aliases <code>lean_obj_arg</code> and <code>b_lean_obj_arg</code> are used to mark this difference on the C side.</p>
 <p>Return values and <code>@[export]</code> parameters are always owned at the moment.</p>
-<h2><a class="header" href="#initialization" id="initialization">Initialization</a></h2>
+<h2 id="initialization"><a class="header" href="#initialization">Initialization</a></h2>
 <p>When including Lean code as part of a larger program, modules must be <em>initialized</em> before accessing any of their declarations.
 Module initialization entails</p>
 <ul>
@@ -3850,7 +3819,7 @@ if (lean_io_result_is_ok(res)) {
 //lean_init_task_manager();  // necessary if you (indirectly) use `Task`
 lean_io_mark_end_initialization();
 </code></pre>
-<h2><a class="header" href="#extern-in-the-interpreter" id="extern-in-the-interpreter"><code>@[extern]</code> in the Interpreter</a></h2>
+<h2 id="extern-in-the-interpreter"><a class="header" href="#extern-in-the-interpreter"><code>@[extern]</code> in the Interpreter</a></h2>
 <p>The interpreter can run Lean declarations for which symbols are available in loaded shared libraries, which includes <code>@[extern]</code> declarations.
 Thus to e.g. run <code>#eval</code> on such a declaration, you need to</p>
 <ol>
@@ -3860,7 +3829,7 @@ Thus to e.g. run <code>#eval</code> on such a declaration, you need to</p>
 <p>Note that it is not sufficient to load the foreign library containing the external symbol because the interpreter depends on code that is emitted for each <code>@[extern]</code> declaration.
 Thus it is not possible to interpret an <code>@[extern]</code> declaration in the same file.</p>
 <p>See <code>tests/compiler/foreign</code> for an example.</p>
-<h1><a class="header" href="#unit-testing" id="unit-testing">Unit Testing</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="unit-testing"><a class="header" href="#unit-testing">Unit Testing</a></h1>
 <p>You can run the unit tests after completing a build using the following:</p>
 <p>After <a href="dev/../make/index.html">building lean</a> you can run all the tests using</p>
 <pre><code>cd build/release
@@ -3946,7 +3915,7 @@ even trust the .olean files (i.e., trust 0).</p>
 <code>lean</code> via the <code>--plugin</code> command line option.</p>
 </li>
 </ul>
-<h2><a class="header" href="#settings" id="settings">Settings</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="settings"><a class="header" href="#settings">Settings</a></h2>
 <p>We are using the following settings while editing the markdown docs.</p>
 <pre><code class="language-json">{
     &quot;files.insertFinalNewline&quot;: true,
@@ -3956,7 +3925,7 @@ even trust the .olean files (i.e., trust 0).</p>
     }
 }
 </code></pre>
-<h2><a class="header" href="#build" id="build">Build</a></h2>
+<h2 id="build"><a class="header" href="#build">Build</a></h2>
 <p>This manual is generated by
 <a href="https://github.com/rust-lang/mdBook">mdBook</a>. We are currently using
 a <a href="https://github.com/leanprover/mdBook">fork</a> of it for the following
@@ -3978,7 +3947,7 @@ mdbook watch --open  # opens the output in `out/` in your default browser
 the mdBook fork downloaded from our binary cache:</p>
 <pre><code class="language-bash">nix develop .#doc
 </code></pre>
-<h1><a class="header" href="#fixing-tests" id="fixing-tests">Fixing Tests</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="fixing-tests"><a class="header" href="#fixing-tests">Fixing Tests</a></h1>
 <p>The test suite contains some tests that compare the produced output
 with the expected output. For example, the directory <code>tests/lean</code>
 contains files such as <a href="dev/../tests/lean/bad_class.lean"><code>bad_class.lean</code></a> and
@@ -4006,9 +3975,9 @@ When using the Nix setup, add <code>--keep-failed</code> to the <code>nix build<
 <pre><code class="language-sh">tests/lean/copy-produced &lt;build-dir&gt;/source/tests/lean
 </code></pre>
 <p>instead where <code>&lt;build-dir&gt;</code> is the path printed out by <code>nix build</code>.</p>
-<h1><a class="header" href="#debugging-1" id="debugging-1">Debugging</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="debugging-1"><a class="header" href="#debugging-1">Debugging</a></h1>
 <p>Some notes on how to debug Lean, which may also be applicable to debugging Lean programs in general.</p>
-<h2><a class="header" href="#tracing" id="tracing">Tracing</a></h2>
+<h2 id="tracing"><a class="header" href="#tracing">Tracing</a></h2>
 <p>In <code>CoreM</code> and derived monads, we use <code>trace![traceCls] &quot;msg with {interpolations}&quot;</code> to fill the structured trace viewable with <code>set_option trace.traceCls true</code>.
 New trace classes have to be registered using <code>registerTraceClass</code> first.</p>
 <p>Notable trace classes:</p>
@@ -4032,7 +4001,7 @@ set_option pp.raw.maxDepth 10
 </ul>
 <p>In pure contexts or when execution is aborted before the messages are finally printed, one can instead use the term <code>dbg_trace &quot;msg with {interpolations}&quot;; val</code> (<code>;</code> can also be replaced by a newline), which will print the message directly to stderr before evaluating <code>val</code>. <code>dbgTraceVal val</code> can be used as a shorthand for <code>dbg_trace &quot;{val}&quot;; val</code>.
 Note that if the return value is not actually used, the trace code is silently dropped as well.</p>
-<h2><a class="header" href="#debuggers" id="debuggers">Debuggers</a></h2>
+<h2 id="debuggers"><a class="header" href="#debuggers">Debuggers</a></h2>
 <p><code>gdb</code>/<code>lldb</code> can be used to inspect stack traces of compiled Lean code, though they cannot print values of Lean variables and terms in any legible way yet.
 For example, <code>b lean_panic_fn</code> can be used to look at the stack trace of a panic.</p>
 <p>The <a href="https://github.com/rr-debugger/rr"><code>rr</code> reverse debugger</a> is an amazing tool for investigating e.g. segfaults from reference counting errors, though better hope you will never need it...</p>
@@ -4041,59 +4010,31 @@ For example, <code>b lean_panic_fn</code> can be used to look at the stack trace
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                        
-
-                        
-
                         <div style="clear: both"></div>
                     </nav>
                 </div>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                
-
-                
             </nav>
 
         </div>
 
-        
-
-        
-
-        
-
-        
         <script type="text/javascript">
             window.playground_copyable = true;
         </script>
-        
-
-        
-
-        
         <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
-        
-
         <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
         <script src="book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
-        
-
-        
-        
         <script type="text/javascript">
         window.addEventListener('load', function() {
             window.setTimeout(window.print, 100);
         });
         </script>
-        
-        
-
     </body>
 </html>

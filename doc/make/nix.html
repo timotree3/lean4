@@ -4,47 +4,27 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Nix Setup (Experimental) - Lean Manual</title>
-        
-        
-
-
         <!-- Custom HTML head -->
-        
-
-
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        
         <link rel="icon" href="../favicon.svg">
-        
-        
         <link rel="shortcut icon" href="../favicon.png">
-        
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        
         <link rel="stylesheet" href="../css/print.css" media="print">
-        
-
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        
         <link rel="stylesheet" href="../fonts/fonts.css">
-        
-
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="../highlight.css">
         <link rel="stylesheet" href="../tomorrow-night.css">
         <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        
-
-        
     </head>
     <body>
         <!-- Provide site root to javascript -->
@@ -59,11 +39,11 @@
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
 
-                if (theme.startsWith('"') && theme.endsWith('"')) {
+                if (theme && theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
                 }
 
-                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                if (sidebar && sidebar.startsWith('"') && sidebar.endsWith('"')) {
                     localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
                 }
             } catch (e) { }
@@ -103,7 +83,6 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                
                 <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
@@ -120,33 +99,26 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        
                         <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
-                        
                     </div>
 
                     <h1 class="menu-title">Lean Manual</h1>
 
                     <div class="right-buttons">
-                        
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        
-                        
                         <a href="https://github.com/leanprover/lean4" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        
                     </div>
                 </div>
 
-                
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -154,8 +126,6 @@
                         </ul>
                     </div>
                 </div>
-                
-
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script type="text/javascript">
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
@@ -167,9 +137,9 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#building-with-nix" id="building-with-nix">Building with Nix</a></h1>
+                        <h1 id="building-with-nix"><a class="header" href="#building-with-nix">Building with Nix</a></h1>
 <p>While <a href="https://nixos.org/nix/">Nix</a> can be used to quickly open a shell with all dependencies for the <a href="index.html">standard setup</a> installed, the user-facing <a href="../setup.html#nix-setup">Nix Setup</a> can also be used to work <em>on</em> Lean.</p>
-<h2><a class="header" href="#setup" id="setup">Setup</a></h2>
+<h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
 <p>Follow the setup in the link above; to open the Lean shell inside a Lean checkout, you can also use</p>
 <pre><code class="language-bash"># in the Lean root directory
 $ nix-shell -A nix
@@ -183,7 +153,7 @@ To enable CCache, add the following line to the config file mentioned in the set
 # macOS standard chown doesn't support --reference
 nix shell .#nixpkgs.coreutils -c sudo chown --reference=/nix/store /nix/var/cache/ccache
 </code></pre>
-<h2><a class="header" href="#basic-build-commands" id="basic-build-commands">Basic Build Commands</a></h2>
+<h2 id="basic-build-commands"><a class="header" href="#basic-build-commands">Basic Build Commands</a></h2>
 <p>From the Lean root directory inside the Lean shell:</p>
 <pre><code class="language-bash">nix build .#stage1  # build this stage's stdlib &amp; executable
 nix build .#stage1.test  # run all tests
@@ -195,7 +165,7 @@ nix run .#stage1.update-stage0-commit  # ...and commit the results
 nix build .  # build stage 1
 nix build  # dito
 </code></pre>
-<h2><a class="header" href="#build-process-description" id="build-process-description">Build Process Description</a></h2>
+<h2 id="build-process-description"><a class="header" href="#build-process-description">Build Process Description</a></h2>
 <p>The Nix build process conceptually works the same as described in <a href="index.html#lean-build-pipeline">Lean Build Pipeline</a>.
 However, there are two important differences in practice apart from the standard Nix properties (hermeneutic, reproducible builds stored in a global hash-indexed store etc.):</p>
 <ul>
@@ -204,7 +174,7 @@ This is actually a general property of Nix flakes, and has the benefit of making
 <li>Only files reachable from <code>src/Lean.lean</code> are compiled.
 This is because modules are discovered not from a directory listing anymore but by recursively compiling all dependencies of that top module.</li>
 </ul>
-<h2><a class="header" href="#editor-integration" id="editor-integration">Editor Integration</a></h2>
+<h2 id="editor-integration"><a class="header" href="#editor-integration">Editor Integration</a></h2>
 <p>As in the standard Nix setup.
 After adding <code>src/</code> as an LSP workspace, it should automatically fall back to using stage 0 in there.</p>
 <p>Note that the UX of <code>{emacs,vscode}-dev</code> is quite different from the Make-based setup regarding the compilation of dependencies:
@@ -213,7 +183,7 @@ Instead, <code>emacs-dev</code> will gather the individual dependency outputs fr
 However, it will only ever load changes saved to disk, not ones opened in other buffers.</p>
 <p>The absence of a mutable output directory also means that the Lean server will not automatically pick up <code>.ilean</code> metadata from newly compiled files.
 Instead, you can run <code>nix run .#link-ilean</code> to symlink the <code>.ilean</code> tree of the stdlib state at that point in time to <code>src/build/lib</code>, where the server should automatically find them.</p>
-<h2><a class="header" href="#other-fun-stuff-to-do-with-nix" id="other-fun-stuff-to-do-with-nix">Other Fun Stuff to Do with Nix</a></h2>
+<h2 id="other-fun-stuff-to-do-with-nix"><a class="header" href="#other-fun-stuff-to-do-with-nix">Other Fun Stuff to Do with Nix</a></h2>
 <p>Open Emacs with Lean set up from an arbitrary commit (without even cloning Lean beforehand... if your Nix is new enough):</p>
 <pre><code class="language-bash">nix run github:leanprover/lean4/7e4edeb#emacs-package
 </code></pre>
@@ -237,7 +207,7 @@ nix run .#HEAD-as-stage0.emacs-dev&amp;
 </code></pre>
 <p>This setup will inadvertently change your <code>flake.lock</code> file, which you can revert when you are done.</p>
 <p>...more surely to come...</p>
-<h2><a class="header" href="#debugging" id="debugging">Debugging</a></h2>
+<h2 id="debugging"><a class="header" href="#debugging">Debugging</a></h2>
 <p>Since Nix copies all source files before compilation, you will need to map debug symbols back to the original path using <code>set substitute-path</code> in GDB.
 For example, for a build on Linux with the Nix sandbox activated:</p>
 <pre><code class="language-bash">(gdb) f
@@ -253,67 +223,38 @@ For example, for a build on Linux with the Nix sandbox activated:</p>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                        
                             <a rel="prev" href="../make/wsl.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                        
-
-                        
                             <a rel="next" href="../dev/ffi.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
-                        
-
                         <div style="clear: both"></div>
                     </nav>
                 </div>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                
                     <a rel="prev" href="../make/wsl.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                
-
-                
                     <a rel="next" href="../dev/ffi.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
-                
             </nav>
 
         </div>
 
-        
-
-        
-
-        
-
-        
         <script type="text/javascript">
             window.playground_copyable = true;
         </script>
-        
-
-        
-
-        
         <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
-        
-
         <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
         <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
-        
-
-        
-
     </body>
 </html>
