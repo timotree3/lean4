@@ -137,7 +137,27 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="setting-up-lean"><a class="header" href="#setting-up-lean">Setting Up Lean</a></h1>
+                        <h1 id="supported-platforms"><a class="header" href="#supported-platforms">Supported Platforms</a></h1>
+<h3 id="tier-1"><a class="header" href="#tier-1">Tier 1</a></h3>
+<p>Platforms built &amp; tested by our CI, available as nightly &amp; stable releases via elan (see above)</p>
+<ul>
+<li>x86-64 Linux with glibc 2.27+</li>
+<li>x86-64 macOS 10.15+</li>
+<li>x86-64 Windows 10+</li>
+</ul>
+<h3 id="tier-2"><a class="header" href="#tier-2">Tier 2</a></h3>
+<p>Platforms cross-compiled but not tested by our CI, available as nightly &amp; stable releases</p>
+<p>Releases may be silently broken due to the lack of automated testing.
+Issue reports and fixes are welcome.</p>
+<ul>
+<li>aarch64 Linux with glibc 2.27+</li>
+</ul>
+<h3 id="tier-3"><a class="header" href="#tier-3">Tier 3</a></h3>
+<p>Platforms that are known to work from manual testing, but do not come with CI or official releases</p>
+<ul>
+<li>aarch64 (M1) macOS - may also <a href="https://github.com/leanprover/elan#manual-installation">use x86-64 releases via Rosetta</a></li>
+</ul>
+<h1 id="setting-up-lean"><a class="header" href="#setting-up-lean">Setting Up Lean</a></h1>
 <p>There are currently two ways to set up a Lean 4 development environment:</p>
 <ul>
 <li><a href="./setup.html#basic-setup">basic setup</a> (Linux/macOS/Windows): uses <a href="https://github.com/leanprover/elan"><code>elan</code></a> + your preinstalled editor</li>
