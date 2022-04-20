@@ -2556,7 +2556,11 @@ macro system by setting this option to true : <code>set_option trace.Elab.defini
 <p>Lean also offers the option of limiting the region in which option is set with
 the syntax <code>set_option ... in</code>):</p>
 <p>Hygiene can be disabled with the command option <code>set_option hygiene false</code></p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="examples-1"><a class="header" href="#examples-1">Examples</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="syntax-metaprogramming-examples"><a class="header" href="#syntax-metaprogramming-examples">Syntax Metaprogramming Examples</a></h1>
+<ul>
+<li><a href="./syntax_example.html">Balanced Parentheses</a></li>
+<li><a href="./metaprogramming-arith.html">Arithmetic DSL</a></li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="balanced-parentheses-as-an-embedded-domain-specific-language"><a class="header" href="#balanced-parentheses-as-an-embedded-domain-specific-language">Balanced Parentheses as an Embedded Domain Specific Language</a></h1>
 <p>Let's look at how to use macros to extend the Lean 4 parser and embed a language for building <em>balanced parentheses</em>.
 This language accepts strings given by the <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF grammar</a></p>
@@ -5095,7 +5099,7 @@ in the footer prefixed with &quot;Closes&quot; keyword like this:</p>
 <p>Closes #123, #456</p>
 </li>
 </ul>
-<h2 id="examples-2"><a class="header" href="#examples-2">Examples</a></h2>
+<h2 id="examples-1"><a class="header" href="#examples-1">Examples</a></h2>
 <p>fix: add declarations for operator&lt;&lt;(std::ostream&amp;, expr const&amp;) and operator&lt;&lt;(std::ostream&amp;, context const&amp;) in the kernel</p>
 <p>The actual implementation of these two operators is outside of the
 kernel. They are implemented in the file 'library/printer.cpp'. We
