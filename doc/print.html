@@ -2640,23 +2640,23 @@ instead of their new meaning within a macro (treat as a symbol).</li>
 <p>Let's begin with the simplest thing possible. We'll define an AST, and use operators <code>+</code> and <code>*</code> to denote
 building an arithmetic AST.</p>
 <p>Here's the AST that we will be parsing:</p>
-<pre><code class="language-lean ignore">-- example on parsing arith language via macros
-inductive Arith : Type where
-  | add : Arith → Arith → Arith -- e + f
-  | mul : Arith → Arith → Arith -- e * f
-  | int : Int → Arith -- constant
-  | symbol : String → Arith -- variable
+<pre><code class="language-lean ignore">inductive Arith : Type
+  | add : Arith → Arith → Arith  -- e + f
+  | mul : Arith → Arith → Arith  -- e * f
+  | int : Int → Arith  -- constant
+  | symbol : String → Arith  -- variable
 </code></pre>
 <p>We declare a syntax category to describe the grammar that we will be parsing.
 See that we control the precedence of <code>+</code> and <code>*</code> by writing <code>syntax:50</code> for addition and <code>syntax:60</code> for multiplication,
 indicating that multiplication binds tighter than addition (higher the number, tighter the binding).
 This allows us to declare <em>precedence</em> when defining new syntax.</p>
 <pre><code class="language-lean ignore">declare_syntax_cat arith
-syntax num : arith -- int for Arith.int
-syntax str : arith -- strings for Arith.symbol
-syntax:60  arith:60 &quot;+&quot; arith:61 : arith -- Arith.add
-syntax:70 arith:70 &quot;*&quot; arith:71 : arith -- Arith.mul
-syntax &quot;(&quot; arith &quot;)&quot; : arith -- bracketed expressions
+
+syntax num : arith  -- int for Arith.int
+syntax str : arith  -- strings for Arith.symbol
+syntax:60  arith:60 &quot;+&quot; arith:61 : arith  -- Arith.add
+syntax:70 arith:70 &quot;*&quot; arith:71 : arith  -- Arith.mul
+syntax &quot;(&quot; arith &quot;)&quot; : arith  -- parenthesized expressions
 </code></pre>
 <p>Further, if we look at <code>syntax:60  arith:60 &quot;+&quot; arith:61 : arith</code>, the
 precedence declarations at <code>arith:60 &quot;+&quot; arith:61</code> conveys that the left
@@ -2685,7 +2685,7 @@ the right argument to have precedence <strong>at least</strong> 71. Thus, this p
 a precedence of <code>70</code> to <code>(a * b)</code>. This is compatible with addition which expects the left argument to have precedence
 **at least <code>60</code> ** (<code>70</code> is greater than <code>60</code>). Thus, the string <code>a * b + c</code> is parsed as <code>(a * b) + c</code>.
 For more details, please look at the <a href="../syntax.html#notations-and-precedence">Lean manual on syntax extensions</a>.</p>
-<p>To go from strings into <code>Arith</code>, We define a macro to
+<p>To go from strings into <code>Arith</code>, we define a macro to
 translate the syntax category <code>arith</code> into an <code>Arith</code> inductive value that
 lives in <code>term</code>:</p>
 <pre><code class="language-lean ignore">-- auxiliary notation for translating `arith` into `term`
@@ -2693,83 +2693,80 @@ syntax &quot;`[Arith| &quot; arith &quot;]&quot; : term
 </code></pre>
 <p>Our macro rules perform the &quot;obvious&quot; translation:</p>
 <pre><code class="language-lean ignore">macro_rules
-  | `(`[Arith| $s:strLit ]) =&gt; `(Arith.symbol $s)
-  | `(`[Arith| $num:numLit ]) =&gt; `(Arith.int $num)
-  | `(`[Arith| $x:arith + $y:arith ]) =&gt; `(Arith.add `[Arith| $x] `[Arith| $y])
-  | `(`[Arith| $x:arith * $y:arith ]) =&gt; `(Arith.mul `[Arith| $x] `[Arith| $y])
-  | `(`[Arith| ($x:arith) ]) =&gt; `(`[Arith| $x ])
+  | `(`[Arith| $s:str]) =&gt; `(Arith.symbol $s)
+  | `(`[Arith| $num:num]) =&gt; `(Arith.int $num)
+  | `(`[Arith| $x:arith + $y:arith]) =&gt; `(Arith.add `[Arith| $x] `[Arith| $y])
+  | `(`[Arith| $x:arith * $y:arith]) =&gt; `(Arith.mul `[Arith| $x] `[Arith| $y])
+  | `(`[Arith| ($x:arith)]) =&gt; `(`[Arith| $x])
 </code></pre>
 <p>And some examples:</p>
-<pre><code class="language-lean ignore">#check `[Arith| &quot;x&quot; * &quot;y&quot;] -- Arith.mul (Arith.symbol &quot;x&quot;) (Arith.symbol &quot;y&quot;) : Arith
+<pre><code class="language-lean ignore">#check `[Arith| &quot;x&quot; * &quot;y&quot;]  -- mul
+-- Arith.mul (Arith.symbol &quot;x&quot;) (Arith.symbol &quot;y&quot;)
 
-#check `[Arith| &quot;x&quot; + &quot;y&quot;] -- add
--- Arith.add (Arith.symbol &quot;x&quot;) (Arith.symbol &quot;y&quot;) 
+#check `[Arith| &quot;x&quot; + &quot;y&quot;]  -- add
+-- Arith.add (Arith.symbol &quot;x&quot;) (Arith.symbol &quot;y&quot;)
 
-#check  `[Arith| &quot;x&quot; + 20] -- symbol + int
+#check `[Arith| &quot;x&quot; + 20]  -- symbol + int
 -- Arith.add (Arith.symbol &quot;x&quot;) (Arith.int 20)
 
+#check `[Arith| &quot;x&quot; + &quot;y&quot; * &quot;z&quot;]  -- precedence
+-- Arith.add (Arith.symbol &quot;x&quot;) (Arith.mul (Arith.symbol &quot;y&quot;) (Arith.symbol &quot;z&quot;))
 
-#check `[Arith| &quot;x&quot; + &quot;y&quot; * &quot;z&quot; ] -- precedence
-Arith.add (Arith.symbol &quot;x&quot;) (Arith.mul (Arith.symbol &quot;y&quot;) (Arith.symbol &quot;z&quot;))
--- 
-#check `[Arith| &quot;x&quot; * &quot;y&quot; + &quot;z&quot;] -- precedence
+#check `[Arith| &quot;x&quot; * &quot;y&quot; + &quot;z&quot;]  -- precedence
 -- Arith.add (Arith.mul (Arith.symbol &quot;x&quot;) (Arith.symbol &quot;y&quot;)) (Arith.symbol &quot;z&quot;)
 
-
-#check `[Arith| (&quot;x&quot; + &quot;y&quot;) * &quot;z&quot;] -- brackets
+#check `[Arith| (&quot;x&quot; + &quot;y&quot;) * &quot;z&quot;]  -- parentheses
 -- Arith.mul (Arith.add (Arith.symbol &quot;x&quot;) (Arith.symbol &quot;y&quot;)) (Arith.symbol &quot;z&quot;)
 </code></pre>
-<p>Writing variables as strings, such as <code>&quot;x&quot;</code>  gets old; Wouldn't it be so much
+<p>Writing variables as strings, such as <code>&quot;x&quot;</code>  gets old; wouldn't it be so much
 prettier if we could write <code>x * y</code>, and have the macro translate this into <code>Arith.mul (Arith.Symbol &quot;x&quot;) (Arith.mul &quot;y&quot;)</code>?
 We can do this, and this will be our first taste of manipulating macro variables --- we'll use <code>x.getId</code> instead of directly evaluating <code>$x</code>.
 We also write a macro rule for <code>Arith|</code> that translates an identifier into
-a string, using <code>$(Lean.quote (toString x.getId))</code>.  (TODO: explain what
-<code>Lean.quote</code> does):</p>
+a string, using <code>$(Lean.quote (toString x.getId))</code>:</p>
 <pre><code class="language-lean ignore">syntax ident : arith
 
 macro_rules
   | `(`[Arith| $x:ident]) =&gt; `(Arith.symbol $(Lean.quote (toString x.getId)))
 </code></pre>
 <p>Let's test and see that we can now write expressions such as <code>x * y</code> directly instead of having to write <code>&quot;x&quot; * &quot;y&quot;</code>:</p>
-<pre><code class="language-lean ignore">#check `[Arith| x ] -- Arith.symbol &quot;x&quot;
+<pre><code class="language-lean ignore">#check `[Arith| x]  -- Arith.symbol &quot;x&quot;
 
 def xPlusY := `[Arith| x + y]
-#check xPlusY -- Arith.add (Arith.symbol &quot;x&quot;) (Arith.symbol &quot;y&quot;)
+#print xPlusY  -- def xPlusY : Arith := Arith.add (Arith.symbol &quot;x&quot;) (Arith.symbol &quot;y&quot;)
 </code></pre>
 <p>We now show an unfortunate consequence of the above definitions. Suppose we want to build <code>(x + y) + z</code>.
 Since we already have defined <code>xPlusY</code> as <code>x + y</code>, perhaps we should reuse it! Let's try:</p>
-<pre><code class="language-lean ignore">#check `[Arith| xPlusY + z] -- Arith.add (Arith.symbol &quot;xPlusY&quot;) (Arith.symbol &quot;z&quot;)
+<pre><code class="language-lean ignore">#check `[Arith| xPlusY + z]  -- Arith.add (Arith.symbol &quot;xPlusY&quot;) (Arith.symbol &quot;z&quot;)
 </code></pre>
 <p>Whoops, that didn't work! What happened? Lean treats <code>xPlusY</code> <em>itself</em> as an identifier! So we need to add some syntax
 to be able to &quot;escape&quot; the <code>Arith|</code> context. Let's use the syntax <code>&lt;[ $e:term ]&gt;</code> to mean: evaluate <code>$e</code> as a real term,
 not an identifier. The macro looks like follows:</p>
-<pre><code class="language-lean ignore">syntax &quot;&lt;[&quot; term &quot;]&gt;&quot; : arith -- escape for embedding terms into `Arith`
-macro_rules
-  | `(`[Arith| &lt;[ $e:term ]&gt; ]) =&gt; e
+<pre><code class="language-lean ignore">syntax &quot;&lt;[&quot; term &quot;]&gt;&quot; : arith  -- escape for embedding terms into `Arith`
 
+macro_rules
+  | `(`[Arith| &lt;[ $e:term ]&gt;]) =&gt; pure e
 </code></pre>
 <p>Let's try our previous example:</p>
-<pre><code class="language-lean ignore">#check `[Arith| &lt;[ xPlusY ]&gt; + z] -- Arith.add xPlusY (Arith.symbol &quot;z&quot;)
+<pre><code class="language-lean ignore">#check `[Arith| &lt;[ xPlusY ]&gt; + z]  -- Arith.add xPlusY (Arith.symbol &quot;z&quot;)
 </code></pre>
 <p>Perfect!</p>
 <p>In this tutorial, we expanded on the previous tutorial to parse a more
 realistic grammar with multiple levels of precedence, how to parse identifiers directly
 within a macro, and how to provide an escape from within the macro context.</p>
 <h4 id="full-code-listing"><a class="header" href="#full-code-listing">Full code listing</a></h4>
-<pre><code class="language-lean">-- example on parsing arith language via macros
-inductive Arith : Type
-  | add : Arith → Arith → Arith -- e + f
-  | mul : Arith → Arith → Arith -- e * f
-  | int : Int → Arith -- constant
-  | symbol : String → Arith -- variable
+<pre><code class="language-lean">inductive Arith : Type
+  | add : Arith → Arith → Arith  -- e + f
+  | mul : Arith → Arith → Arith  -- e * f
+  | int : Int → Arith  -- constant
+  | symbol : String → Arith  -- variable
 
 declare_syntax_cat arith
 
-syntax num : arith -- int for Arith.int
-syntax str : arith -- strings for Arith.symbol
-syntax:60  arith:60 &quot;+&quot; arith:61 : arith -- Arith.add
-syntax:70 arith:70 &quot;*&quot; arith:71 : arith -- Arith.mul
-syntax &quot;(&quot; arith &quot;)&quot; : arith -- bracketed expressions
+syntax num : arith  -- int for Arith.int
+syntax str : arith  -- strings for Arith.symbol
+syntax:60  arith:60 &quot;+&quot; arith:61 : arith  -- Arith.add
+syntax:70 arith:70 &quot;*&quot; arith:71 : arith  -- Arith.mul
+syntax &quot;(&quot; arith &quot;)&quot; : arith  -- parenthesized expressions
 
 -- auxiliary notation for translating `arith` into `term`
 syntax &quot;`[Arith| &quot; arith &quot;]&quot; : term
@@ -2781,22 +2778,22 @@ macro_rules
   | `(`[Arith| $x:arith * $y:arith]) =&gt; `(Arith.mul `[Arith| $x] `[Arith| $y])
   | `(`[Arith| ($x:arith)]) =&gt; `(`[Arith| $x])
 
-#check `[Arith| &quot;x&quot; * &quot;y&quot;] -- mul
+#check `[Arith| &quot;x&quot; * &quot;y&quot;]  -- mul
 -- Arith.mul (Arith.symbol &quot;x&quot;) (Arith.symbol &quot;y&quot;)
 
-#check `[Arith| &quot;x&quot; + &quot;y&quot;] -- add
+#check `[Arith| &quot;x&quot; + &quot;y&quot;]  -- add
 -- Arith.add (Arith.symbol &quot;x&quot;) (Arith.symbol &quot;y&quot;)
 
-#check `[Arith| &quot;x&quot; + 20] -- symbol + int
+#check `[Arith| &quot;x&quot; + 20]  -- symbol + int
 -- Arith.add (Arith.symbol &quot;x&quot;) (Arith.int 20)
 
-#check `[Arith| &quot;x&quot; + &quot;y&quot; * &quot;z&quot;] -- precedence
+#check `[Arith| &quot;x&quot; + &quot;y&quot; * &quot;z&quot;]  -- precedence
 -- Arith.add (Arith.symbol &quot;x&quot;) (Arith.mul (Arith.symbol &quot;y&quot;) (Arith.symbol &quot;z&quot;))
 
-#check `[Arith| &quot;x&quot; * &quot;y&quot; + &quot;z&quot;] -- precedence
+#check `[Arith| &quot;x&quot; * &quot;y&quot; + &quot;z&quot;]  -- precedence
 -- Arith.add (Arith.mul (Arith.symbol &quot;x&quot;) (Arith.symbol &quot;y&quot;)) (Arith.symbol &quot;z&quot;)
 
-#check `[Arith| (&quot;x&quot; + &quot;y&quot;) * &quot;z&quot;] -- brackets
+#check `[Arith| (&quot;x&quot; + &quot;y&quot;) * &quot;z&quot;]  -- parentheses
 -- Arith.mul (Arith.add (Arith.symbol &quot;x&quot;) (Arith.symbol &quot;y&quot;)) (Arith.symbol &quot;z&quot;)
 
 syntax ident : arith
@@ -2804,17 +2801,17 @@ syntax ident : arith
 macro_rules
   | `(`[Arith| $x:ident]) =&gt; `(Arith.symbol $(Lean.quote (toString x.getId)))
 
-#check `[Arith| x] -- Arith.symbol &quot;x&quot;
-def xPlusY := `[Arith| x + y]
-#print xPlusY -- def xPlusY : Arith := Arith.add (Arith.symbol &quot;x&quot;) (Arith.symbol &quot;y&quot;)
+#check `[Arith| x]  -- Arith.symbol &quot;x&quot;
 
-syntax &quot;&lt;[&quot; term &quot;]&gt;&quot; : arith -- escape for embedding terms into `Arith`
+def xPlusY := `[Arith| x + y]
+#print xPlusY  -- def xPlusY : Arith := Arith.add (Arith.symbol &quot;x&quot;) (Arith.symbol &quot;y&quot;)
+
+syntax &quot;&lt;[&quot; term &quot;]&gt;&quot; : arith  -- escape for embedding terms into `Arith`
 
 macro_rules
   | `(`[Arith| &lt;[ $e:term ]&gt;]) =&gt; pure e
 
-
-#check `[Arith| &lt;[ xPlusY ]&gt; + z] -- Arith.add xPlusY (Arith.symbol &quot;z&quot;)
+#check `[Arith| &lt;[ xPlusY ]&gt; + z]  -- Arith.add xPlusY (Arith.symbol &quot;z&quot;)
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="declaring-new-types"><a class="header" href="#declaring-new-types">Declaring New Types</a></h1>
 <p>In Lean's library, every concrete type other than the universes and every type constructor other than the dependent function type is
