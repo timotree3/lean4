@@ -7,6 +7,8 @@ import Lean.Meta.WHNF
 import Lean.Meta.Transform
 import Lean.Meta.DiscrTreeTypes
 
+builtin_initialize Lean.registerTraceClass `Meta.DiscrTree
+
 namespace Lean.Meta.DiscrTree
 /-!
   (Imperfect) discrimination trees.
@@ -182,12 +184,10 @@ private partial def isNumeral (e : Expr) : Bool :=
       else if fName == ``Nat.zero && e.getAppNumArgs == 0 then true
       else false
 
-private partial def toNatLit? (e : Expr) : Option Literal :=
+/-- Returns `some n` if `e` is a numeral denoting `n`. Otherwise, returns `none`. -/
+private partial def toNatLit? (e : Expr) : Option Nat :=
   if isNumeral e then
-    if let some n := loop e then
-      some (.natVal n)
-    else
-      none
+    loop e
   else
     none
 where
@@ -206,6 +206,35 @@ where
       else
         failure
     | _ => failure
+
+/--
+  Converts a numeral `e` into its normal form:
+  - `nat_lit n` normalizes to `@OfNat.ofNat Nat (nat_lit n) _`.
+  - `Nat.zero` normalizes to `@OfNat.ofNat Nat (nat_lit 0) _`.
+  - `Nat.succ x` normalizes to `@OfNat.ofNat Nat (nat_lit (n + 1)) _`,
+    where `x` is a numeral denoting `n`.
+  - `@OfNat.ofNat type x inst` normalizes to `@OfNat.ofNat type (nat_lit n) inst`,
+    where `x` is a numeral denoting `n`.
+
+  Ideally, `nat_lit n` would also normalize to an application of `OfNat.ofNat`, but this would
+  result in infinite loops when traversing the subexpressions of normalized numerals. -/
+private partial def normalizeNumeral (e : Expr) : Expr :=
+  match e with
+  | .lit (.natVal n) => mkNatLit n
+  | .app (.app (.app (.const ``OfNat.ofNat us) type) x) inst =>
+    if let some n := toNatLit? x then
+      -- Note: `inst` will still be type-correct because `nat_lit n` is defeq to `x`.
+      mkApp3 (.const ``OfNat.ofNat us) type (mkRawNatLit n) inst
+    else
+      e
+  | .app (.const ``Nat.succ _) x =>
+    if let some n := toNatLit? x then
+      mkNatLit (n + 1)
+    else
+      e
+  | .const ``Nat.zero _ =>
+    mkNatLit 0
+  | _ => e
 
 private def isNatType (e : Expr) : MetaM Bool :=
   return (← whnf e).isConstOf ``Nat
@@ -320,16 +349,17 @@ where
     | none    => return e
 
 /-- whnf for the discrimination tree module -/
-def reduceDT (e : Expr) (root : Bool) (config : WhnfCoreConfig) : MetaM Expr :=
-  if root then reduceUntilBadKey e config else reduce e config
+def reduceDT (e : Expr) (root insideOfNat : Bool) (config : WhnfCoreConfig) : MetaM Expr := do
+  let e ← if root then reduceUntilBadKey e config else reduce e config
+  return if insideOfNat then e else normalizeNumeral e
 
 /- Remark: we use `shouldAddAsStar` only for nested terms, and `root == false` for nested terms -/
 
-private def pushArgs (root : Bool) (todo : Array Expr) (e : Expr) (config : WhnfCoreConfig) : MetaM (Key × Array Expr) := do
+private def pushArgs (root insideOfNat : Bool) (todo : Array Expr) (e : Expr) (config : WhnfCoreConfig) : MetaM (Key × Array Expr) := do
   if hasNoindexAnnotation e then
     return (.star, todo)
   else
-    let e ← reduceDT e root config
+    let e ← reduceDT e root insideOfNat config
     let fn := e.getAppFn
     let push (k : Key) (nargs : Nat) (todo : Array Expr): MetaM (Key × Array Expr) := do
       let info ← getFunInfoNArgs fn nargs
@@ -340,8 +370,6 @@ private def pushArgs (root : Bool) (todo : Array Expr) (e : Expr) (config : Whnf
       return (.lit v, todo)
     | .const c _ =>
       unless root do
-        if let some v := toNatLit? e then
-          return (.lit v, todo)
         if (← shouldAddAsStar c e) then
           return (.star, todo)
       let nargs := e.getAppNumArgs
@@ -377,14 +405,17 @@ private def pushArgs (root : Bool) (todo : Array Expr) (e : Expr) (config : Whnf
     | _ =>
       return (.other, todo)
 
-partial def mkPathAux (root : Bool) (todo : Array Expr) (keys : Array Key) (config : WhnfCoreConfig) : MetaM (Array Key) := do
+partial def mkPathAux (root : Bool) (todo : Array Expr) (keys : Array Key) (config : WhnfCoreConfig) (ofNatArgsRemaining : Nat := 0) : MetaM (Array Key) := do
   if todo.isEmpty then
     return keys
   else
     let e    := todo.back
     let todo := todo.pop
-    let (k, todo) ← pushArgs root todo e config
-    mkPathAux false todo (keys.push k) config
+    let (k, todo) ← pushArgs root todo e config (insideOfNat := ofNatArgsRemaining != 0)
+    let ofNatArgsRemaining := match k with
+      |.const ``OfNat.ofNat n => n
+      | _ => ofNatArgsRemaining - 1
+    mkPathAux false todo (keys.push k) config ofNatArgsRemaining
 
 private def initCapacity := 8
 
@@ -450,12 +481,8 @@ def insert [BEq α] (d : DiscrTree α) (e : Expr) (v : α) (config : WhnfCoreCon
   let keys ← mkPath e config
   return d.insertCore keys v config
 
-private def getKeyArgs (e : Expr) (isMatch root : Bool) (config : WhnfCoreConfig) : MetaM (Key × Array Expr) := do
-  let e ← reduceDT e root config
-  unless root do
-    -- See pushArgs
-    if let some v := toNatLit? e then
-      return (.lit v, #[])
+private def getKeyArgs (e : Expr) (isMatch root insideOfNat : Bool) (config : WhnfCoreConfig) : MetaM (Key × Array Expr) := do
+  let e ← reduceDT e root insideOfNat config
   match e.getAppFn with
   | .lit v         => return (.lit v, #[])
   | .const c _     =>
@@ -530,11 +557,11 @@ private def getKeyArgs (e : Expr) (isMatch root : Bool) (config : WhnfCoreConfig
   | _ =>
     return (.other, #[])
 
-private abbrev getMatchKeyArgs (e : Expr) (root : Bool) (config : WhnfCoreConfig) : MetaM (Key × Array Expr) :=
-  getKeyArgs e (isMatch := true) (root := root) (config := config)
+private abbrev getMatchKeyArgs (e : Expr) (root insideOfNat : Bool) (config : WhnfCoreConfig) : MetaM (Key × Array Expr) :=
+  getKeyArgs e (isMatch := true) (root := root) (insideOfNat := insideOfNat) (config := config)
 
-private abbrev getUnifyKeyArgs (e : Expr) (root : Bool) (config : WhnfCoreConfig) : MetaM (Key × Array Expr) :=
-  getKeyArgs e (isMatch := false) (root := root) (config := config)
+private abbrev getUnifyKeyArgs (e : Expr) (root insideOfNat : Bool) (config : WhnfCoreConfig) : MetaM (Key × Array Expr) :=
+  getKeyArgs e (isMatch := false) (root := root) (insideOfNat := insideOfNat) (config := config)
 
 private def getStarResult (d : DiscrTree α) : Array α :=
   let result : Array α := .mkEmpty initCapacity
@@ -545,7 +572,7 @@ private def getStarResult (d : DiscrTree α) : Array α :=
 private abbrev findKey (cs : Array (Key × Trie α)) (k : Key) : Option (Key × Trie α) :=
   cs.binSearch (k, default) (fun a b => a.1 < b.1)
 
-private partial def getMatchLoop (todo : Array Expr) (c : Trie α) (result : Array α) (config : WhnfCoreConfig) : MetaM (Array α) := do
+private partial def getMatchLoop (todo : Array Expr) (c : Trie α) (result : Array α) (config : WhnfCoreConfig) (ofNatArgsRemaining : Nat := 0): MetaM (Array α) := do
   match c with
   | .node vs cs =>
     if todo.isEmpty then
@@ -556,19 +583,23 @@ private partial def getMatchLoop (todo : Array Expr) (c : Trie α) (result : Arr
       let e     := todo.back
       let todo  := todo.pop
       let first := cs[0]! /- Recall that `Key.star` is the minimal key -/
-      let (k, args) ← getMatchKeyArgs e (root := false) config
+      let (k, args) ← getMatchKeyArgs e (root := false) (insideOfNat := ofNatArgsRemaining != 0) config
+
       /- We must always visit `Key.star` edges since they are wildcards.
          Thus, `todo` is not used linearly when there is `Key.star` edge
          and there is an edge for `k` and `k != Key.star`. -/
       let visitStar (result : Array α) : MetaM (Array α) :=
         if first.1 == .star then
-          getMatchLoop todo first.2 result config
+          getMatchLoop todo first.2 result config (ofNatArgsRemaining - 1)
         else
           return result
       let visitNonStar (k : Key) (args : Array Expr) (result : Array α) : MetaM (Array α) :=
+        let ofNatArgsRemaining := match k with
+          | .const ``OfNat.ofNat n => n
+          | _ => ofNatArgsRemaining - 1
         match findKey cs k with
         | none   => return result
-        | some c => getMatchLoop (todo ++ args) c.2 result config
+        | some c => getMatchLoop (todo ++ args) c.2 result config ofNatArgsRemaining
       let result ← visitStar result
       match k with
       | .star  => return result
@@ -587,8 +618,9 @@ private def getMatchRoot (d : DiscrTree α) (k : Key) (args : Array Expr) (resul
 
 private def getMatchCore (d : DiscrTree α) (e : Expr) (config : WhnfCoreConfig) : MetaM (Key × Array α) :=
   withReducible do
+    trace[Meta.DiscrTree] "getMatchCore: expr ({e}) with keys ({← mkPath e config})"
     let result := getStarResult d
-    let (k, args) ← getMatchKeyArgs e (root := true) config
+    let (k, args) ← getMatchKeyArgs e (root := true) (insideOfNat := false) config
     match k with
     | .star  => return (k, result)
     /- See note about "dep-arrow vs arrow" at `getMatchLoop` -/
@@ -635,22 +667,22 @@ where
 
 partial def getUnify (d : DiscrTree α) (e : Expr) (config : WhnfCoreConfig) : MetaM (Array α) :=
   withReducible do
-    let (k, args) ← getUnifyKeyArgs e (root := true) config
+    let (k, args) ← getUnifyKeyArgs e (root := true) (insideOfNat := false) config
     match k with
-    | .star => d.root.foldlM (init := #[]) fun result k c => process k.arity #[] c result
+    | .star => d.root.foldlM (init := #[]) fun result k c => process k.arity #[] c result 0
     | _ =>
       let result := getStarResult d
       match d.root.find? k with
       | none   => return result
-      | some c => process 0 args c result
+      | some c => process 0 args c result 0
 where
-  process (skip : Nat) (todo : Array Expr) (c : Trie α) (result : Array α) : MetaM (Array α) := do
+  process (skip : Nat) (todo : Array Expr) (c : Trie α) (result : Array α) (ofNatArgsRemaining : Nat): MetaM (Array α) := do
     match skip, c with
     | skip+1, .node _  cs =>
       if cs.isEmpty then
         return result
       else
-        cs.foldlM (init := result) fun result ⟨k, c⟩ => process (skip + k.arity) todo c result
+        cs.foldlM (init := result) fun result ⟨k, c⟩ => process (skip + k.arity) todo c result ofNatArgsRemaining
     | 0, .node vs cs => do
       if todo.isEmpty then
         return result ++ vs
@@ -659,19 +691,22 @@ where
       else
         let e     := todo.back
         let todo  := todo.pop
-        let (k, args) ← getUnifyKeyArgs e (root := false) config
+        let (k, args) ← getUnifyKeyArgs e (root := false) (insideOfNat := ofNatArgsRemaining != 0) config
         let visitStar (result : Array α) : MetaM (Array α) :=
           let first := cs[0]!
           if first.1 == .star then
-            process 0 todo first.2 result
+            process 0 todo first.2 result (ofNatArgsRemaining - 1)
           else
             return result
         let visitNonStar (k : Key) (args : Array Expr) (result : Array α) : MetaM (Array α) :=
+          let ofNatArgsRemaining := match k with
+            | .const ``OfNat.ofNat n => n
+            | _ => ofNatArgsRemaining - 1
           match findKey cs k with
           | none   => return result
-          | some c => process 0 (todo ++ args) c.2 result
+          | some c => process 0 (todo ++ args) c.2 result ofNatArgsRemaining
         match k with
-        | .star  => cs.foldlM (init := result) fun result ⟨k, c⟩ => process k.arity todo c result
+        | .star  => cs.foldlM (init := result) fun result ⟨k, c⟩ => process k.arity todo c result (ofNatArgsRemaining - 1)
         -- See comment a `getMatch` regarding non-dependent arrows vs dependent arrows
         | .arrow => visitNonStar .other #[] (← visitNonStar k args (← visitStar result))
         | _      => visitNonStar k args (← visitStar result)

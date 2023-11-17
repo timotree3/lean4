@@ -232,7 +232,7 @@ private partial def isPerm : Expr → Expr → MetaM Bool
   | s, t => return s == t
 
 private def checkBadRewrite (lhs rhs : Expr) : MetaM Unit := do
-  let lhs ← DiscrTree.reduceDT lhs (root := true) simpDtConfig
+  let lhs ← DiscrTree.reduceDT lhs (root := true) (insideOfNat := false) simpDtConfig
   if lhs == rhs && lhs.isFVar then
     throwError "invalid `simp` theorem, equation is equivalent to{indentExpr (← mkEq lhs rhs)}"
 
@@ -326,7 +326,7 @@ private def mkSimpTheoremCore (origin : Origin) (e : Expr) (levelParams : Array 
 private def mkSimpTheoremsFromConst (declName : Name) (post : Bool) (inv : Bool) (prio : Nat) : MetaM (Array SimpTheorem) := do
   let cinfo ← getConstInfo declName
   let val := mkConst declName (cinfo.levelParams.map mkLevelParam)
-  withReducible do
+  let thms ← withReducible do
     let type ← inferType val
     checkTypeIsProp type
     if inv || (← shouldPreprocess type) then
@@ -337,6 +337,8 @@ private def mkSimpTheoremsFromConst (declName : Name) (post : Bool) (inv : Bool)
       return r
     else
       return #[← mkSimpTheoremCore (.decl declName) (mkConst declName (cinfo.levelParams.map mkLevelParam)) #[] (mkConst declName) post prio]
+  trace[Meta.Tactic.simp.discr] "mkSimpTheoremsFromConst: declName ({declName}) keys ({thms.map (·.keys)})"
+  return thms
 
 inductive SimpEntry where
   | thm      : SimpTheorem → SimpEntry
