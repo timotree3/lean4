@@ -3,3 +3,9 @@ example : (0 : Nat) = Nat.zero := by
 
 example : (0 : Fin 9) = (Fin.ofNat 0) := by
   simp only [OfNat.ofNat]
+
+example : (0 : Nat) = Nat.zero := by
+  dsimp only [OfNat.ofNat]
+
+example : (0 : Fin 9) = (Fin.ofNat 0) := by
+  dsimp only [OfNat.ofNat]

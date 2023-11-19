@@ -15,7 +15,7 @@ def getSimpMatchContext : MetaM Simp.Context :=
    return {
       simpTheorems   := {}
       congrTheorems := (← getSimpCongrTheorems)
-      config        := { Simp.neutralConfig with dsimp := false }
+      config        := Simp.neutralConfig
    }
 
 def simpMatch (e : Expr) : MetaM Simp.Result := do
@@ -256,7 +256,9 @@ def splitMatch (mvarId : MVarId) (e : Expr) : MetaM (List MVarId) := do
     let matchEqns ← Match.getEquationsFor app.matcherName
     let mvarIds ← applyMatchSplitter mvarId app.matcherName app.matcherLevels app.params app.discrs
     let (_, mvarIds) ← mvarIds.foldlM (init := (0, [])) fun (i, mvarIds) mvarId => do
+      trace[Meta.Tactic.split] "before simpMatchTargetCore[{i}]\n{mvarId}"
       let mvarId ← simpMatchTargetCore mvarId app.matcherName matchEqns.eqnNames[i]!
+      trace[Meta.Tactic.split] "after simpMatchTargetCore[{i}]\n{mvarId}"
       return (i+1, mvarId::mvarIds)
     return mvarIds.reverse
   catch ex =>

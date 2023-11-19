@@ -232,7 +232,7 @@ private partial def isPerm : Expr → Expr → MetaM Bool
   | s, t => return s == t
 
 private def checkBadRewrite (lhs rhs : Expr) : MetaM Unit := do
-  let lhs ← DiscrTree.reduceDT lhs (root := true) (insideOfNat := false) simpDtConfig
+  let lhs ← DiscrTree.reduceDT lhs (root := true) (insideNumeral := false) simpDtConfig
   if lhs == rhs && lhs.isFVar then
     throwError "invalid `simp` theorem, equation is equivalent to{indentExpr (← mkEq lhs rhs)}"
 
