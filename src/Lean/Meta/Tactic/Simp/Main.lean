@@ -238,7 +238,7 @@ def simpLit (e : Expr) : SimpM Result := do
     if (← readThe Simp.Context).isDeclToUnfold ``OfNat.ofNat then
       return { expr := e }
     else
-      return { expr := (← mkNumeral (mkConst ``Nat) n) }
+      return { expr := (mkNatLit n) }
   | none   => return { expr := e }
 
 def simpProj (e : Expr) : SimpM Result := do
@@ -416,6 +416,42 @@ private partial def dsimpImpl (e : Expr) : SimpM Expr := do
       eNew ← reduceFVar cfg (← getSimpTheorems) eNew
     if eNew != e then return .visit eNew else return .done e
   transform (usedLetOnly := cfg.zeta) e (pre := pre) (post := post)
+-- private partial def dsimp (e : Expr) : M Expr := do
+--   let cfg ← getConfig
+--   trace[Debug.Meta.Tactic.simp] "dsimp({e}, cfg.dsimp={cfg.dsimp})"
+--   unless cfg.dsimp do
+--     return e
+--   let ctx ← readThe Simp.Context
+--   let pre (e : Expr) : M TransformStep := do
+--     trace[Debug.Meta.Tactic.simp] "pre({e}), isOfNatNatLit=({isOfNatNatLit e})"
+--     if let Step.visit r ← rewritePre e (fun _ => pure none) (rflOnly := true) then
+--       if r.expr != e then
+--         return .visit r.expr
+--     -- Block recursion into `OfNat.ofNat` literals
+--     -- TODO: Don't we want to simplify the implicit type argument still?
+--     if isOfNatNatLit e then
+--       trace[Debug.Meta.Tactic.simp] "isOfNatNatLit!!!"
+--       -- Recall that we expand "orphan" kernel nat literals `n` into `ofNat n`
+--       return .done e
+--     return .continue
+--   let post (e : Expr) : M TransformStep := do
+--     trace[Debug.Meta.Tactic.simp] "post({e})"
+--     -- Normalize unenclosed `nat_lit n` into `OfNat.ofNat (nat_lit n)`
+--     if let some n := e.natLit? then
+--       trace[Debug.Meta.Tactic.simp] "is natLit? !!!"
+--       /- If `OfNat.ofNat` is marked to be unfolded, we do not pack orphan nat literals as `OfNat.ofNat` applications
+--          to avoid non-termination. See issue #788.  -/
+--       if ¬ctx.isDeclToUnfold ``OfNat.ofNat then
+--         return .visit (mkNatLit n)
+--     -- fixme
+--     if let Step.visit r ← rewritePost e (fun _ => pure none) (rflOnly := true) then
+--       if r.expr != e then
+--         return .visit r.expr
+--     let mut eNew ← reduce e
+--     if eNew.isFVar then
+--       eNew ← reduceFVar cfg (← getSimpTheorems) eNew
+--     if eNew != e then return .visit eNew else return .done e
+--   transform (usedLetOnly := cfg.zeta) e (pre := pre) (post := post)
 
 def visitFn (e : Expr) : SimpM Result := do
   let f := e.getAppFn
